@@ -1,6 +1,6 @@
 "use client";
 import { getCalendar } from "@/actions/getCalendar";
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 
 interface Task {
   name: string;
@@ -16,68 +16,34 @@ interface Task {
 }
 
 interface AppContextProps {
-    tasks: Task[];
-    month: number;
-    setMonth: React.Dispatch<React.SetStateAction<number>>; // Include setMonth in the interface
-    day: number;
-    setDay: React.Dispatch<React.SetStateAction<number>>;
-    year: number;
-    setYear: React.Dispatch<React.SetStateAction<number>>;
-    getDayForTask: () => void;
-    getTasks: () => Task[];
-  }
+  month: number;
+  setMonth: React.Dispatch<React.SetStateAction<number>>; // Include setMonth in the interface
+  day: number;
+  setDay: React.Dispatch<React.SetStateAction<number>>;
+  year: number;
+  setYear: React.Dispatch<React.SetStateAction<number>>;
+  getDayForTask: () => void;
+  isToday: boolean;
+  currentDay: number;
+  currentMonth: number;
+  currentYear: number;
+}
 
-  const AppContext = createContext<AppContextProps>({
-    tasks: [],
-    month: 1,
-    setMonth: () => {},
-    day: 1,
-    setDay: () => {},
-    year: 2024,
-    setYear: () => {},
-    getDayForTask: () => {},
-    getTasks: () => []
-  });
-  
+const AppContext = createContext<AppContextProps>({
+  month: 1,
+  setMonth: () => {},
+  day: 1,
+  setDay: () => {},
+  year: 2024,
+  setYear: () => {},
+  getDayForTask: () => {},
+  isToday: true,
+  currentDay: 0,
+  currentMonth: 0,
+  currentYear: 0,
+});
+
 export function AppWrapper({ children }: { children: React.ReactNode }) {
-  let [tasks, setTasks] = useState<Task[]>([
-    {
-      name: "buy a kebab",
-      startedHour: "11:15",
-      endingHour: "14:30",
-      width: 0,
-      totalStarting: 0,
-      totalEnding: 0,
-      position: 0,
-      day: 26,
-      month: 1,
-      year:2024
-    },
-    {
-      name: "learning english",
-      startedHour: "17:15",
-      endingHour: "19:30",
-      width: 0,
-      totalStarting: 0,
-      totalEnding: 0,
-      position: 0,
-      day: 26,
-      month: 1,
-      year:2024
-    },
-    {
-      name: "training",
-      startedHour: "12:15",
-      endingHour: "15:30",
-      width: 0,
-      totalStarting: 0,
-      totalEnding: 0,
-      position: 65,
-      day: 27,
-      month: 1,
-      year:2024
-    },
-  ]);
   const currentDate = new Date();
   const [year, setYear] = useState(currentDate.getFullYear());
   const [month, setMonth] = useState(currentDate.getMonth());
@@ -85,6 +51,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
   const [currentYear, currentSetYear] = useState(currentDate.getFullYear());
   const [currentMonth, currentSetMonth] = useState(currentDate.getMonth());
   const [currentDay, currentSetDay] = useState(currentDate.getDate());
+  const [isToday, setIsToday] = useState<boolean>(false);
 
   const getDayForTask = () => {
     const calendar = getCalendar();
@@ -95,36 +62,30 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
     );
   };
 
-  const getTasks = () => {
-     const todayTasks = tasks.filter(task => task.day === day && task.month === month && task.year === year)
-     todayTasks.forEach((task) => {
-      const startedTimeParts = task.startedHour.split(":");
-      const endingTimeParts = task.endingHour.split(":");
-  
-      // Przekształcamy godziny i minuty na liczby
-      const startedHour = parseInt(startedTimeParts[0], 10);
-      const startedMinute = parseInt(startedTimeParts[1], 10);
-  
-      const totalStarting = (startedHour * 60) + startedMinute   
-  
-      const endingHour = parseInt(endingTimeParts[0], 10);
-      const endingMinute = parseInt(endingTimeParts[1], 10);
-  
-      const totalEnding = (endingHour * 60) + endingMinute
-  
-      // Obliczamy różnicę czasu w minutach
-      const timeDifferenceInMinutes =
-        endingHour * 60 + endingMinute - (startedHour * 60 + startedMinute);
-      const width = (timeDifferenceInMinutes / 15) * 30;
-      task.width = width;
-      task.totalStarting = totalStarting;
-      task.totalEnding = totalEnding;
-    });
-     return todayTasks
+  useEffect(() => {
+    if (currentMonth === month && currentDay === day && currentYear === year) {
+      setIsToday(true);
+    } else {
+      setIsToday(false);
     }
+  }, [day, month, year]);
 
   return (
-    <AppContext.Provider value={{ tasks, month, setMonth, day, setDay, year, setYear, getDayForTask, getTasks }}>
+    <AppContext.Provider
+      value={{
+        month,
+        setMonth,
+        day,
+        setDay,
+        year,
+        setYear,
+        getDayForTask,
+        isToday,
+        currentDay,
+        currentMonth,
+        currentYear,
+      }}
+    >
       {children}
     </AppContext.Provider>
   );

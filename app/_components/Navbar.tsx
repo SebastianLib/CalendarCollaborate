@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 
 const Navbar = () => {
   return (
-    <nav className='p-6 bg-blue-500 text-white flex justify-between items-center'>
+    <nav className='p-6 px-10 bg-blue-500 text-white flex justify-between items-center'>
         <SignedIn>
             <div className="hidden md:flex">
               <UserButton />
@@ -21,7 +21,7 @@ const Navbar = () => {
             </Link>
           </div>
         </SignedOut>
-        <ul className='flex gap-4 text-xl'>
+        <ul className='flex gap-8 text-xl'>
             <li><Link href={"/create"}>Create</Link></li>
             <li><Link href={"/schedule"}>Schedule</Link></li>
         </ul>

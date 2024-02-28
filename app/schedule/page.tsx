@@ -1,28 +1,33 @@
-"use client";
-import { useEffect, useState } from "react";
+"use client"
 import DayHoursDisplay from "./_components/DayHoursDisplay";
 import DateButtons from "./_components/DateButtons";
 import { useAppContext } from "@/context";
-
+import { useEffect, useState } from "react";
+import { getTasks } from "@/actions/getTasks";
+import { Task } from "@prisma/client";
 
 const SchedulePage = () => {  
-  const currentDate = new Date();
-  const {day, month, year} = useAppContext();
-    const [isToday, setIsToday] = useState<boolean>(false);
+  const { day, month, year} = useAppContext();
+  const [tasks, setTasks] = useState<Task[] | null >();
 
-      useEffect(()=>{
-        if(currentDate.getMonth() === month && currentDate.getDate() === day && currentDate.getFullYear() === year){
-          setIsToday(true);
-        }else{
-          setIsToday(false);
-        }
-      }, [day, month, year])
-    
-    
+  useEffect(()=>{
+    const getAllTasks = async () => {
+
+      try {
+        const fetchedTasks = await getTasks({ day, month, year });
+        setTasks(fetchedTasks );
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      }
+    }
+
+  getAllTasks();
+  },[day, month, year])
+  
       return (
         <div className="m-4">
           <DateButtons/>
-          <DayHoursDisplay isToday={isToday}/>
+          <DayHoursDisplay tasks={tasks!}/>
         </div>
       );
 }

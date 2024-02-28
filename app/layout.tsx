@@ -4,6 +4,8 @@ import "./globals.css";
 import { AppWrapper } from "@/context";
 import Navbar from "./_components/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <ToastContainer />
         <ClerkProvider>
           <AppWrapper>
             <Navbar />

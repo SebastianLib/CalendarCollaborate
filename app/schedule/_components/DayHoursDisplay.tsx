@@ -1,16 +1,16 @@
 "use client";
 import { useAppContext } from "@/context";
+import { Task } from "@prisma/client";
 import { useEffect, useState } from "react";
+import SingleTask from "./SingleTask";
 
-interface DayHoursDisplayProps {
-  isToday: boolean;
+interface DayHoursDisplay {
+  tasks: Task[];
 }
 
-const DayHoursDisplay = ({ isToday }: DayHoursDisplayProps) => {
+const DayHoursDisplay = ({ tasks }: DayHoursDisplay) => {
+  const { isToday } = useAppContext();
 
-  const {day, month, year, getDayForTask, getTasks} = useAppContext();
-    const tasks = getTasks()
-    
   const initialMinutes = new Date().getMinutes();
   const initialhours = new Date().getHours();
 
@@ -47,7 +47,7 @@ const DayHoursDisplay = ({ isToday }: DayHoursDisplayProps) => {
                 {index < 10 ? `0${index}:00` : `${index}:00`}
               </p>
               <div
-                className={`absolute bg-red-300 w-1 h-full z-50 ${
+                className={`absolute bg-red-400 w-1 top-0 h-full z-40 ${
                   currentHour === index && isToday ? "visible" : "hidden"
                 }`}
                 style={{ left: `${percent}%` }}
@@ -55,22 +55,15 @@ const DayHoursDisplay = ({ isToday }: DayHoursDisplayProps) => {
               <div className="flex">
                 {hours.map((hour, index) => {
                   return (
-                    <div key={index} className={`w-[30px] relative`}>
-                      {/* {hour} */}
-                      {tasks.map((task, index) => (
-                        
-                          String(hour) === task.startedHour ? (
-                            <div
-                              key={index}
-                              className="bg-blue-500 absolute h-[60px] z-20"
-                              style={{ width: task.width, marginTop: task.position }}
-                            >
-                              <p className="text-white">{task.name}</p>
-                            </div>
-                          )
-                        : null
-                      ))}
-
+                    <div
+                      key={index}
+                      className={`w-[30px] cursor-pointer`}
+                    >
+                      {tasks?.map((task, index) => {
+                        return String(hour) === task?.startingHour ? (
+                          <SingleTask key={task.id} task={task} />
+                        ) : null;
+                      })}
                     </div>
                   );
                 })}

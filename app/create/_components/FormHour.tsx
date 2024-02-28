@@ -23,7 +23,7 @@ const FormStartedHour = ({
   type,
 }: {
   form: UseFormReturn<z.infer<typeof formSchema>>;
-  type: "startedHour" | "endedHour";
+  type: "start" | "end";
 }) => {
   const hours = getAllHours();
 
@@ -33,11 +33,11 @@ const FormStartedHour = ({
       name={type}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{type === "startedHour" ? "Starting hour" : "Ending Hour"}</FormLabel>
+          <FormLabel>{type === "start" ? "Starting hour" : "Ending Hour"}</FormLabel>
           <Select onValueChange={field.onChange}>
             <FormControl>
               <SelectTrigger>
-                <SelectValue placeholder={`select ${type === "startedHour" ? "starting" : "ending"} time`} />
+                <SelectValue placeholder={`select ${type === "start" ? "starting" : "ending"} time`} />
               </SelectTrigger>
             </FormControl>
             <SelectContent>

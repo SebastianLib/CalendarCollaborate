@@ -1,10 +1,10 @@
-
+"use client"
 import { getCalendar } from "@/actions/getCalendar";
 import { useAppContext } from "@/context";
-import { months } from "@/lib/xdd";
+import { months } from "@/lib/utils";
 
 const DateButtons = () => {
-  const {day, month, year, setDay, setMonth, setYear } = useAppContext();
+  const {day, month, setDay, setMonth} = useAppContext();
 
     const calendar:any = getCalendar();
 
