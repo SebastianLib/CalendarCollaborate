@@ -19,6 +19,8 @@ import { shortcutMonths } from "@/lib/utils";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import FormColor from "./FormColor";
+import { getInfo } from "@/actions/getInfo";
 
 export const formSchema = z.object({
   name: z.string().min(2).max(50),
@@ -27,9 +29,10 @@ export const formSchema = z.object({
   }),
   start: z.string(),
   end: z.string(),
+  color: z.string(),
 });
 
-const CalendarForm = () => {
+const ScheduleForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const router = useRouter();
@@ -38,12 +41,15 @@ const CalendarForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      color: "blue"
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setError("")
-    const { name, date, start, end } = { ...values };
+    const { name, date, start, end, color } = { ...values };
+    console.log(date);
+    
     const currentDate = String(date);
     const stringMonth = currentDate.split(" ")[1];
     const day = parseInt(currentDate.split(" ")[2]);
@@ -52,23 +58,7 @@ const CalendarForm = () => {
       (month: string) => month === stringMonth
     );
 
-    const startingTimeParts = start.split(":");
-    const endingTimeParts = end.split(":");
-
-    const startingHour = parseInt(startingTimeParts[0]);
-    const startingMinute = parseInt(startingTimeParts[1]);
-    const endingHour = parseInt(endingTimeParts[0]);
-    const endingMinute = parseInt(endingTimeParts[1]);
-
-    const totalStarting = startingHour * 60 + startingMinute;
-
-    const totalEnding = endingHour * 60 + endingMinute;
-
-    const timeDifferenceInMinutes =
-      endingHour * 60 + endingMinute - (startingHour * 60 + startingMinute);
-    const width = (timeDifferenceInMinutes / 15) * 30;
-    totalStarting;
-    totalEnding;
+      const {totalStarting, totalEnding, width} = getInfo(start, end)
 
     if (totalStarting >= totalEnding) {
       return setError("The end time cannot be less than or equal to the start time");
@@ -79,17 +69,20 @@ const CalendarForm = () => {
       await axios.post("/api/create", {
         name,
         startingHour: start,
-        endingHour,
+        endingHour: end,
         totalStarting,
         totalEnding,
         width,
         day,
         month,
         year,
+        color,
+        date
       });
       toast.success("you have created a new task");
       router.push("/schedule")
     } catch (error) {
+      console.log(error)
     } finally {
       setLoading(false);
     }
@@ -123,6 +116,7 @@ const CalendarForm = () => {
             <FormCalendar form={form} />
             <FormStartedHour type={"start"} form={form} />
             <FormStartedHour type={"end"} form={form} />
+            <FormColor form={form}/>
 
             <Button
               disabled={loading}
@@ -139,4 +133,4 @@ const CalendarForm = () => {
   );
 };
 
-export default CalendarForm;
+export default ScheduleForm;

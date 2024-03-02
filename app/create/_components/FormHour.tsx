@@ -1,5 +1,5 @@
 import { UseFormReturn } from "react-hook-form";
-import { formSchema } from "./CalendarForm";
+import { formSchema } from "./ScheduleForm";
 import { getAllHours } from "@/actions/getHours";
 import { z } from "zod";
 

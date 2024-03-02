@@ -8,7 +8,7 @@ export async function POST(
     try {
         const {userId} = auth();
         const data = await req.json();
-
+        
         if(!userId){
             return new NextResponse("unauthorized", {status: 401})
         }
@@ -21,15 +21,33 @@ export async function POST(
                 year: data.year,
             }
         })
-        const simultaneousTasks = tasks.filter(task => 
-            data.totalStarting >= task.totalStarting && data.totalStarting <= task.totalEnding
-            || data.totalEnding >= task.totalStarting && data.totalEnding <= task.totalEnding).length;
-        
 
+        // const simultaneousTasks = tasks.filter(task => 
+        //     data.totalStarting >= task.totalStarting && data.totalStarting <= task.totalEnding
+        //     || data.totalEnding >= task.totalStarting && data.totalEnding <= task.totalEnding
+        //     || data.totalStarting <= task.totalStarting && data.totalEnding >= task.totalEnding
+        //     ).length;
+        
+        //     const collisionTasks = await prisma.task.findMany({
+        //         where:{
+        //             position: simultaneousTasks,
+        //             userId: userId,
+        //             day: data.day,
+        //             month: data.month,
+        //             year: data.year,
+        //         }
+        //     })
+        //     const changeCollisionPostion  = collisionTasks.filter(task => 
+        //         data.totalStarting >= task.totalStarting && data.totalStarting <= task.totalEnding
+        //         || data.totalEnding >= task.totalStarting && data.totalEnding <= task.totalEnding
+        //         || data.totalStarting <= task.totalStarting && data.totalEnding >= task.totalEnding
+        //         ).length;
+
+            
         const task = await prisma.task.create({
             data: {
                 userId: userId,
-                position: simultaneousTasks,
+                position: tasks.length,
                 ...data
             }
         })

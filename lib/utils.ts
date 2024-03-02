@@ -20,3 +20,5 @@ export const months = [
 export const shortcutMonths = [
   "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
 ]
+
+export const colors = ["blue", "red", "green", "orange", "purple"]

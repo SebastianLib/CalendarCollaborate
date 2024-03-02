@@ -17,13 +17,15 @@ model Task {
   id            String @id @default(auto()) @map("_id") @db.ObjectId
   userId        String
   name          String
-  startingHour   String
-  endingHour    Int
+  startingHour  String
+  endingHour    String
   totalStarting Int
   totalEnding   Int
+  color         String
   width         Int
   position      Int
   day           Int
   month         Int
   year          Int
+  date          DateTime
 }

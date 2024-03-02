@@ -19,7 +19,7 @@ import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { UseFormReturn, useForm} from "react-hook-form";
 import { z } from "zod";
-import { formSchema } from "./CalendarForm";
+import { formSchema } from "./ScheduleForm";
 export const FormCalendar = ({ form }: { form: UseFormReturn<z.infer<typeof formSchema>> }) => {
   return (
     <FormField
