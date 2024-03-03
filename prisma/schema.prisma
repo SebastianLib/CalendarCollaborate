@@ -29,3 +29,13 @@ model Task {
   year          Int
   date          DateTime
 }
+
+model User {
+    id            String @id @default(auto()) @map("_id") @db.ObjectId
+    clerkId String
+    firstName String
+    lastName String
+    username String
+    email String
+    photo String
+}
