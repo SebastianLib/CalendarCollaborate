@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button";
 import { Task } from "@prisma/client";
 import EditName from "./EditName";
 import EditHour from "./EditHour";
 import { EditCalendar } from "./EditCalendar";
 import EditColor from "./EditColor";
+import DeleteTask from "./DeleteTask";
 
 interface InformationProps {
   singleTask: Task;
@@ -27,7 +27,7 @@ const Information = ({ singleTask }: InformationProps) => {
               
               <EditColor id={id} color={color}/>
 
-            <Button variant={"destructive"} size={"lg"} className="h-10 self-center ">Remove</Button>
+              <DeleteTask id={id}/>
           </div>
         </div>
     </section>

@@ -48,7 +48,6 @@ const ScheduleForm = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setError("")
     const { name, date, start, end, color } = { ...values };
-    console.log(date);
     
     const currentDate = String(date);
     const stringMonth = currentDate.split(" ")[1];

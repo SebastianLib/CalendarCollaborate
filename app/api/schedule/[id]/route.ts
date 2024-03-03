@@ -30,3 +30,28 @@ export async function PUT(
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { id: string } }) {
+  try {
+    const { userId } = auth();
+    if (!userId) {
+      return new NextResponse("unauthorized", { status: 401 });
+    }
+    
+    const { id } = params;
+
+    const task = await prisma.task.delete({
+      where: {
+        id,
+        userId
+      },
+    });
+
+    return NextResponse.json(task);
+  } catch (error) {
+    console.log("[DELETE_TASK]", error);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}
