@@ -31,11 +31,22 @@ model Task {
 }
 
 model User {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
-  clerkId   String
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  clerkId   String  @unique
   firstName String
   lastName  String
   username  String
   email     String
   photo     String
+  owner    Team[] @relation("Owner")
+  members    Team[] @relation("Members")
+}
+
+model Team {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  name String 
+  owner     User    @relation("Owner", fields: [ownerId], references: [clerkId])
+  ownerId   String
+  members   User  @relation("Members", fields: [memberId], references: [clerkId])
+  memberId  String
 }

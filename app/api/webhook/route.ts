@@ -4,6 +4,7 @@ import { WebhookEvent } from '@clerk/nextjs/server'
 import { clerkClient } from '@clerk/nextjs'
 import { NextResponse } from 'next/server'
 import { createUser } from '@/actions/createUser'
+import { prisma } from '@/db'
  
 export async function POST(req: Request) {
  
@@ -66,17 +67,24 @@ export async function POST(req: Request) {
       photo: image_url,
     }
 
-    const newUser = await createUser(user);
-
-    if(newUser) {
-      await clerkClient.users.updateUserMetadata(id, {
-        publicMetadata: {
-          userId: newUser._id
+    try {
+      const newUser = await prisma.user.create({
+        data:{
+            ...user
         }
       })
-    }
 
-    return NextResponse.json({ message: 'OK', user: newUser })
+      if(newUser) {
+        await clerkClient.users.updateUserMetadata(id, {
+          publicMetadata: {
+            userId: newUser.id
+          }
+        })
+      }
+      return NextResponse.json({ message: 'OK', user: newUser })
+    } catch (error) {
+      console.log(error);
+    }
   }
  
   console.log(`Webhook with and ID of ${id} and type of ${eventType}`)
