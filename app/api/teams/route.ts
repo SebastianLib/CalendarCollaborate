@@ -4,7 +4,7 @@ import { auth } from '@clerk/nextjs';
 
 const prisma = new PrismaClient();
 
-export async function PATCH(req:Response) {
+export async function PATCH(req:Request) {
   try {
     const { userId } = auth();
     if (!userId) {
