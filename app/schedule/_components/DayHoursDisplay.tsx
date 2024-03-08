@@ -61,7 +61,7 @@ const DayHoursDisplay = ({ tasks }: DayHoursDisplay) => {
                     >
                       {tasks?.map((task, index) => {
                         return String(hour) === task?.startingHour ? (
-                          <SingleTask key={task.id} task={task} />
+                          <SingleTask key={task.id} task={task} index={index} />
                         ) : null;
                       })}
                     </div>

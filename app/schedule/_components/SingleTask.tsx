@@ -9,12 +9,13 @@ import Link from "next/link";
 
 interface SingleTask {
   task: Task;
+  index: number
 }
 
-const SingleTask = ({ task }: SingleTask) => {
+const SingleTask = ({ task, index }: SingleTask) => {
   return (
     <div
-      style={{ width: task.width, marginTop: task.position * 70 }}
+      style={{ width: task.width, marginTop: (index * 70) }}
     >
       <TooltipProvider>
         <Tooltip>

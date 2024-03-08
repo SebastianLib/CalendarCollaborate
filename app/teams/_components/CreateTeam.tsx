@@ -6,7 +6,6 @@ import {
 import { prisma } from "@/db";
 import { auth } from "@clerk/nextjs";
   import { Plus } from "lucide-react";
-import Image from "next/image";
 import { redirect } from "next/navigation";
 import React from "react";
 import CreateTeamForm from "./CreateTeamForm";

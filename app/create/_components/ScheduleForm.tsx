@@ -21,18 +21,25 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import FormColor from "./FormColor";
 import { getInfo } from "@/actions/getInfo";
+import { Team, User } from "@prisma/client";
+import FormTeam from "./FormTeam";
 
 export const formSchema = z.object({
   name: z.string().min(2).max(50),
   date: z.date({
     required_error: "A date is required.",
   }),
-  start: z.string(),
-  end: z.string(),
-  color: z.string(),
+  start: z.string().min(2),
+  end: z.string().min(2),
+  color: z.string().min(2),
+  team: z.string().optional(),
 });
 
-const ScheduleForm = () => {
+interface ScheduleFormProps {
+  teams: Team[];
+}
+
+const ScheduleForm = ({teams }: ScheduleFormProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const router = useRouter();
@@ -41,14 +48,14 @@ const ScheduleForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      color: "blue"
+      color: "blue",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setError("")
-    const { name, date, start, end, color } = { ...values };
-    
+    setError("");
+    const { name, date, start, end, color, team } = { ...values };
+
     const currentDate = String(date);
     const stringMonth = currentDate.split(" ")[1];
     const day = parseInt(currentDate.split(" ")[2]);
@@ -57,11 +64,13 @@ const ScheduleForm = () => {
       (month: string) => month === stringMonth
     );
 
-      const {totalStarting, totalEnding, width} = getInfo(start, end)
+    const { totalStarting, totalEnding, width } = getInfo(start, end);
 
     if (totalStarting >= totalEnding) {
-      return setError("The end time cannot be less than or equal to the start time");
-     }
+      return setError(
+        "The end time cannot be less than or equal to the start time"
+      );
+    }
 
     try {
       setLoading(true);
@@ -76,7 +85,8 @@ const ScheduleForm = () => {
         month,
         year,
         color,
-        date
+        date,
+        team
       });
       toast.success("you have created a new task");
       router.push("/schedule")
@@ -91,36 +101,35 @@ const ScheduleForm = () => {
     <div className="mt-10">
       <div className="w-full container mx-auto">
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="grid grid-cols-1 md:grid-cols-2 items-center gap-10"
-          >
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>name</FormLabel>
-                  <FormControl>
-                    <Input
-                      className=""
-                      placeholder="Enter the task name"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormCalendar form={form} />
-            <FormStartedHour type={"start"} form={form} />
-            <FormStartedHour type={"end"} form={form} />
-            <FormColor form={form}/>
-
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-10">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>name</FormLabel>
+                    <FormControl>
+                      <Input
+                        className=""
+                        placeholder="Enter the task name"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormCalendar form={form} />
+              <FormStartedHour type={"start"} form={form} />
+              <FormStartedHour type={"end"} form={form} />
+              <FormColor form={form} />
+              <FormTeam form={form} teams={teams} />
+            </div>
             <Button
               disabled={loading}
               type="submit"
-              className="col-span-2 py-6 text-xl"
+              className="w-full py-6 text-xl my-10"
             >
               Submit
             </Button>

@@ -15,10 +15,30 @@ const SinglePage = async({
 
     const singleTask = await prisma.task.findUnique({
       where: {
-        userId,
-        id: params.id
-      }
-    })
+        id: params.id,
+      },
+      include: {
+        team: {
+          where: {
+            OR: [
+              {
+                ownerId: userId,
+              },
+              {
+                members: {
+                  some: {
+                    clerkId: userId,
+                  },
+                },
+              },
+            ],
+          },
+          include: {
+            members: true,
+          },
+        },
+      },
+    });
         
   return (
     <div>
