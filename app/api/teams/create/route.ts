@@ -4,7 +4,7 @@ import { auth } from '@clerk/nextjs';
 
 const prisma = new PrismaClient();
 
-export async function POST(req:Response) {
+export async function POST(req: Request) {
   try {
     const { userId } = auth();
     if (!userId) {
@@ -13,20 +13,20 @@ export async function POST(req:Response) {
 
     const { name, selectedPeople } = await req.json();
 
-    const clerkIds = selectedPeople.map((user:any) => user.clerkId);
+    const clerkIds = selectedPeople.map((user: any) => user.clerkId);
     const teamMemberships = clerkIds.map((clerkId: string) => ({
-        clerkId,
-      })).concat({clerkId: userId});
+      clerkId,
+    })).concat({ clerkId: userId });
 
-      const newTeam = await prisma.team.create({
-        data: {
-          name,
-          ownerId: userId,
-          members: {
-            create: teamMemberships,
-          },
+    const newTeam = await prisma.team.create({
+      data: {
+        name,
+        ownerId: userId,
+        members: {
+          create: teamMemberships,
         },
-      });
+      },
+    });
     return NextResponse.json(newTeam);
   } catch (error) {
     console.log('[CREATE_TASK]', error);
