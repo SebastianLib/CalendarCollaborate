@@ -4,6 +4,7 @@ import { useAuth } from "@clerk/nextjs";
 import { Team, TeamMembership, User } from "@prisma/client";
 import axios from "axios";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
@@ -20,23 +21,23 @@ interface TeamsProps {
 const Teams = ({ teams }: TeamsProps) => {
   const { userId } = useAuth();
   const [loading, setLoading] = useState<boolean>();
-  const router = useRouter()
+  const router = useRouter();
 
-  const joinToTeam = async (teamId:string) => {
+  const joinToTeam = async (teamId: string) => {
     try {
       setLoading(true);
-      await axios.patch("/api/teams",{teamId: teamId});
-      toast.success("you joined the team!")
-      router.push("teams/"+teamId)
+      await axios.patch("/api/teams", { teamId: teamId });
+      toast.success("you joined the team!");
+      router.push("teams/" + teamId);
     } catch (error) {
       console.log(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 
   return (
-    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
+    <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-2">
       {teams.map((team) => {
         const isUserInTeam =
           team.members.some((member: any) => member.user.clerkId === userId) ||
@@ -63,12 +64,16 @@ const Teams = ({ teams }: TeamsProps) => {
                 </div>
                 {!isUserInTeam ? (
                   <Button
-                  disabled={loading} 
-                  onClick={()=>joinToTeam(team.id)} className="px-8">
+                    disabled={loading}
+                    onClick={() => joinToTeam(team.id)}
+                    className="px-6"
+                  >
                     Join
                   </Button>
                 ) : (
-                  <Button className="px-6">Go to the team</Button>
+                  <Link href={`teams/${team.id}`}>
+                    <Button className="px-6">Go there</Button>
+                  </Link>
                 )}
               </div>
             </div>

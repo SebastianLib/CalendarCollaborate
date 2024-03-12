@@ -14,18 +14,20 @@ const DayHoursDisplay = ({ tasks }: DayHoursDisplay) => {
   const initialMinutes = new Date().getMinutes();
   const initialhours = new Date().getHours();
 
-  const [percent, setPercent] = useState((initialMinutes / 60) * 100);
   const [currentHour, setCurrentHour] = useState(initialhours);
   const [currentMinute, setCurrentMinute] = useState(initialMinutes);
+  const [percent, setPercent] = useState((currentMinute / 60) * 100);
 
   let hours = [];
   for (let i = 0; i < 24; i++) {
     const quarters = [[`${i}:00`], [`${i}:15`], [`${i}:30`], [`${i}:45`]];
     hours.push(quarters);
   }
-
+  
   useEffect(() => {
     const intervalId = setInterval(() => {
+      console.log("xdddd");
+      
       const currentDate = new Date();
       setCurrentHour(currentDate.getHours());
       setCurrentMinute(currentDate.getMinutes());
@@ -35,7 +37,7 @@ const DayHoursDisplay = ({ tasks }: DayHoursDisplay) => {
     return () => clearInterval(intervalId);
   }, []);
   return (
-    <div className="min-h-[600px] flex flex-shrink-0 bg-gray-100 overflow-x-scroll">
+    <div className="min-h-[650px] flex flex-shrink-0 bg-gray-100 overflow-x-scroll">
       <div className="flex">
         {hours.map((hours, index) => {
           return (

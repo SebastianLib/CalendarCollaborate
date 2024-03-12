@@ -2,11 +2,15 @@
 import { getCalendar } from "@/actions/getCalendar";
 import { useAppContext } from "@/context";
 import { months } from "@/lib/utils";
+import { useEffect } from "react";
 
 const DateButtons = () => {
-  const {day, month, setDay, setMonth} = useAppContext();
-
+  const {day, month, setDay, setMonth, resetCalendar} = useAppContext();
     const calendar:any = getCalendar();
+
+    useEffect(() => {
+      resetCalendar();
+    }, []);
 
     const handleDay = (action: string) => {
         if (action === "next") {

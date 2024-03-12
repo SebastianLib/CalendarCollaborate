@@ -1,19 +1,6 @@
 "use client";
-import { getCalendar } from "@/actions/getCalendar";
 import { createContext, useState, useContext, useEffect } from "react";
 
-interface Task {
-  name: string;
-  startedHour: string;
-  endingHour: string;
-  width: number;
-  totalStarting: number;
-  totalEnding: number;
-  position: number;
-  day: number;
-  month: number;
-  year: number;
-}
 
 interface AppContextProps {
   month: number;
@@ -22,11 +9,8 @@ interface AppContextProps {
   setDay: React.Dispatch<React.SetStateAction<number>>;
   year: number;
   setYear: React.Dispatch<React.SetStateAction<number>>;
-  getDayForTask: () => void;
   isToday: boolean;
-  currentDay: number;
-  currentMonth: number;
-  currentYear: number;
+  resetCalendar: () => void
 }
 
 const AppContext = createContext<AppContextProps>({
@@ -36,11 +20,8 @@ const AppContext = createContext<AppContextProps>({
   setDay: () => {},
   year: 2024,
   setYear: () => {},
-  getDayForTask: () => {},
   isToday: true,
-  currentDay: 0,
-  currentMonth: 0,
-  currentYear: 0,
+  resetCalendar:() => {}
 });
 
 export function AppWrapper({ children }: { children: React.ReactNode }) {
@@ -53,15 +34,6 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
   const [currentDay, currentSetDay] = useState(currentDate.getDate());
   const [isToday, setIsToday] = useState<boolean>(false);
 
-  const getDayForTask = () => {
-    const calendar = getCalendar();
-    console.log(
-      year,
-      calendar[month][day - 1].dayName,
-      calendar[month][day - 1].number
-    );
-  };
-
   useEffect(() => {
     if (currentMonth === month && currentDay === day && currentYear === year) {
       setIsToday(true);
@@ -69,6 +41,12 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
       setIsToday(false);
     }
   }, [day, month, year]);
+
+  const resetCalendar = () => {
+      setDay(currentDate.getDate())
+      setMonth(currentDate.getMonth())
+      setYear(currentDate.getFullYear())
+  }
 
   return (
     <AppContext.Provider
@@ -79,11 +57,8 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         setDay,
         year,
         setYear,
-        getDayForTask,
         isToday,
-        currentDay,
-        currentMonth,
-        currentYear,
+        resetCalendar,
       }}
     >
       {children}

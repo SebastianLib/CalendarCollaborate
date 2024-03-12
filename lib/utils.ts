@@ -22,3 +22,9 @@ export const shortcutMonths = [
 ]
 
 export const colors = ["blue", "red", "green", "orange", "purple"]
+
+export const linksArray = [
+  { href: '/create', label: 'Create' },
+  { href: '/schedule', label: 'Schedule' },
+  { href: '/teams', label: 'Teams' },
+];
