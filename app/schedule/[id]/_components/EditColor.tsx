@@ -20,24 +20,25 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import { colors } from "@/lib/utils";
 import { X } from "lucide-react";
 
 interface EditColorProps {
-  id: string;
   color: string;
+  isEditable: boolean;
 }
 
 const FormSchema = z.object({
   newColor: z.string(),
 });
 
-const EditColor = ({ id, color }: EditColorProps) => {
+const EditColor = ({ color, isEditable }: EditColorProps) => {
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
+  const { id } = useParams<{ id: string }>();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -70,11 +71,11 @@ const EditColor = ({ id, color }: EditColorProps) => {
       >
         <div className="flex items-center gap-2 text-xl">
           <h2 className="font-bold text-md">Color:</h2>
-          <div className="w-6 h-6 rounded-full" style={{background: color}}/>
+          <div className="w-6 h-6 rounded-full" style={{ background: color }} />
         </div>
         <div className="flex w-full justify-center md:justify-end">
           <Button
-            className="w-[50%] sm:w-28"
+            className={`w-[50%] sm:w-28 ${!isEditable && "hidden"}`}
             onClick={() => setIsEditing(true)}
           >
             Edit

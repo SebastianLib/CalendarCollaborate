@@ -1,6 +1,6 @@
 import { auth } from "@clerk/nextjs";
 import { TeamMembership, User } from "@prisma/client";
-import { Crown } from "lucide-react";
+import { Crown, List } from "lucide-react";
 import Image from "next/image";
 import RemoveUser from "./RemoveUser";
 
@@ -14,8 +14,8 @@ const Members = ({ members, ownerId }: MembersProps) => {
 
   return (
     <div className="space-y-2">
-      <h2 className="text-xl font-semibold">Members</h2>
-      <div className="max-w-[400px] border border-gray-100 rounded-md shadow-md">
+      <h2 className="text-xl font-semibold flex items-center gap-1"><List/> Members</h2>
+      <div className=" border border-gray-100 rounded-md shadow-md">
         {members.map((member) => (
           <div key={member.id} className="flex justify-between items-center border-b p-4">
             <div className="flex gap-1">

@@ -8,16 +8,13 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import { X } from "lucide-react";
 
@@ -27,11 +24,12 @@ const FormSchema = z.object({
   }),
 });
 
-const EditName = ({ name, id }: { name: string; id: string }) => {
+const EditName = ({ name, isEditable}: { name: string, isEditable:boolean}) => {
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
-
+  const {id} = useParams<{ id: string }>();
+  
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -65,7 +63,7 @@ const EditName = ({ name, id }: { name: string; id: string }) => {
         </div>
         <div className="flex w-full justify-center md:justify-end">
           <Button
-            className="w-[50%] sm:w-28"
+            className= {`w-[50%] sm:w-28 ${!isEditable && "hidden"}`}
             onClick={() => setIsEditing(true)}
           >
             Edit

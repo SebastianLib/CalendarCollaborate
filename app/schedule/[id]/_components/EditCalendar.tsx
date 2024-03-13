@@ -18,17 +18,18 @@ import {
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 interface EditCalendarProps {
-  id: string;
   currentDate: Date;
+  isEditable: boolean;
 }
 
-export function EditCalendar({ id, currentDate }: EditCalendarProps) {
+export function EditCalendar({ currentDate, isEditable }: EditCalendarProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const {id} = useParams<{ id: string }>();
 
   const FormSchema = z.object({
     dob: z.date().default(currentDate),
@@ -79,8 +80,8 @@ export function EditCalendar({ id, currentDate }: EditCalendarProps) {
           <p>{format(currentDate, "PPP")}</p>
         </div>
         <div className="flex w-full justify-center md:justify-end">
-          <Button
-            className="w-[50%] sm:w-28"
+        <Button
+            className= {`w-[50%] sm:w-28 ${!isEditable && "hidden"}`}
             onClick={() => setIsEditing(true)}
           >
             Edit

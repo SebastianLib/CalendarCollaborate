@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import { getAllHours } from "@/actions/getHours";
 import { getInfo } from "@/actions/getInfo";
@@ -28,9 +28,9 @@ import { X } from "lucide-react";
 
 interface EditHourProps {
   hour: string;
-  id: string;
   type: "startingHour" | "endingHour";
   secondHour: string;
+  isEditable: boolean;
 }
 
 const FormSchema = z.object({
@@ -39,11 +39,12 @@ const FormSchema = z.object({
   }),
 });
 
-const EditHour = ({ hour, id, type, secondHour }: EditHourProps) => {
+const EditHour = ({ hour, type, secondHour, isEditable }: EditHourProps) => {
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
   const hours = getAllHours();
+  const { id } = useParams<{ id: string }>();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -109,7 +110,7 @@ const EditHour = ({ hour, id, type, secondHour }: EditHourProps) => {
         </div>
         <div className="flex w-full justify-center md:justify-end">
           <Button
-            className="w-[50%] sm:w-28"
+            className={`w-[50%] sm:w-28 ${!isEditable && "hidden"}`}
             onClick={() => setIsEditing(true)}
           >
             Edit
@@ -148,9 +149,9 @@ const EditHour = ({ hour, id, type, secondHour }: EditHourProps) => {
                 </FormItem>
               )}
             />
-          <Button disabled={loading} type="submit">
-            Submit
-          </Button>
+            <Button disabled={loading} type="submit">
+              Submit
+            </Button>
           </div>
           <div className="flex w-full justify-center md:justify-end">
             <X

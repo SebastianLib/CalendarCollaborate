@@ -1,11 +1,11 @@
 "use client"
 import DayHoursDisplay from "./_components/DayHoursDisplay";
-import DateButtons from "./_components/DateButtons";
+import DateButtons from "../../components/shared/DateButtons";
 import { useAppContext } from "@/context";
 import { useEffect, useState } from "react";
 import { getTasks } from "@/actions/getTasks";
 import { Task } from "@prisma/client";
-import Loading from "./_components/Loading";
+import Loading from "../../components/shared/Loading";
 
 const SchedulePage = () => {  
   const { day, month, year} = useAppContext();

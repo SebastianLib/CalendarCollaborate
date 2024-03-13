@@ -1,13 +1,14 @@
 "use client"
 import { Button } from "@/components/ui/button"
 import axios from "axios"
-import { useRouter } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "react-toastify"
 
-const DeleteTask = ({id}:{id:string}) => {
+const DeleteTask = () => {
 const [isRemoving, setIsRemoving] = useState<boolean>(false);
 const router = useRouter();
+const {id} = useParams<{ id: string }>();
 
     const handleRemove = async() => {
         try {

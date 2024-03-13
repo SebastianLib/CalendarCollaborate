@@ -1,14 +1,17 @@
 "use server"
 import { prisma } from "@/db";
 import { auth } from "@clerk/nextjs";
+import { Task } from "@prisma/client";
 
 interface GetTasksProps {
   day: number;
   month: number;
   year: number;
+  onlyTeam?: boolean;
+  teamId?: string;
 }
 
-export const getTasks = async ({ day, month, year }: GetTasksProps) => {
+export const getTasks = async ({ day, month, year, onlyTeam, teamId }: GetTasksProps) => {
   try {
     const { userId } = auth();
 
@@ -16,21 +19,24 @@ export const getTasks = async ({ day, month, year }: GetTasksProps) => {
       throw new Error("Unauthorized");
     }
 
-
-    const userTasks = await prisma.task.findMany({
-      where: {
-        userId,
-        day: day,
-        month: month,
-        year: year,
-      }
-    });
+    let userTasks:Array<Task> = []
+    if(!onlyTeam){
+       userTasks = await prisma.task.findMany({
+        where: {
+          userId,
+          day: day,
+          month: month,
+          year: year,
+        }
+      });
+    }
 
     const allTasks = await prisma.task.findMany({
       where:{
         day: day,
         month: month,
         year: year,
+        teamId
       },
       include: {
         team: {
@@ -44,9 +50,9 @@ export const getTasks = async ({ day, month, year }: GetTasksProps) => {
         },
       },
     });
-
+    
     const teamTasks = allTasks.filter(task => task.team?.members.length! > 0);
-
+    
     const combinedTasks = userTasks.concat(teamTasks);
 
     const uniqueIds = new Set();

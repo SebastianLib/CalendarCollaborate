@@ -4,7 +4,11 @@ import { useAppContext } from "@/context";
 import { months } from "@/lib/utils";
 import { useEffect } from "react";
 
-const DateButtons = () => {
+interface DateButtonProps{
+  size?: "sm"
+}
+
+const DateButtons = ({size}:DateButtonProps) => {
   const {day, month, setDay, setMonth, resetCalendar} = useAppContext();
     const calendar:any = getCalendar();
 
@@ -29,25 +33,25 @@ const DateButtons = () => {
           }
         }
       };
-
+      
   return (
-    <div>
-    <div className="flex gap-4 items-center">
+    <div className={`${size === "sm" && ""}`}>
+    <div className={`flex items-center ${size === "sm" ? "flex gap-1":" gap-4"}`}>
     <button
       onClick={() => handleDay("prev")}
-      className="bg-blue-600 text-white px-4 py-2"
+      className={`bg-blue-600 text-white px-4 py-2 ${size === "sm" ? "text-sm px-3" : "px-4 py-2"}`}
     >
       back
     </button>
     <button
       onClick={() => handleDay("next")}
-      className="bg-blue-600 text-white px-4 py-2"
+      className={`bg-blue-600 text-white px-4 py-2 ${size === "sm" ? "text-sm px-3" : "px-4 py-2"}`}
     >
       next
     </button>
     </div>
     <div className="flex gap-2">
-    <p className="text-xl font-semibold mt-2"><span className="font-bold">{months[month]}: </span> {calendar[month][day - 1].dayName} {calendar[month][day - 1].number}</p>
+    <p className={` font-semibold ${size==="sm" ? "text-lg" : "text-xl"} mt-2`}><span className="font-bold">{months[month]}: </span> {calendar[month][day - 1].dayName} {calendar[month][day - 1].number}</p>
   </div>
   </div>
   )

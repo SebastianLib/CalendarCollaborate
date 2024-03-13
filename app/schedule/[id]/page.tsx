@@ -39,7 +39,7 @@ const SinglePage = async({
         },
       },
     });
-        
+
   return (
     <div>
       <Information singleTask={singleTask!}/>
