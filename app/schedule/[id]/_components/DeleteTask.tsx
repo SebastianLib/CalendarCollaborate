@@ -25,7 +25,7 @@ const {id} = useParams<{ id: string }>();
     }
 
   return (
-    <Button disabled={isRemoving} onClick={handleRemove} variant={"destructive"} size={"lg"} className="h-10 self-center ">Remove</Button>
+    <Button disabled={isRemoving} onClick={handleRemove} variant={"destructive"} size={"lg"}>Remove</Button>
   )
 }
 

@@ -1,11 +1,11 @@
 "use client";
 import { useAppContext } from "@/context";
-import { Task } from "@prisma/client";
+import { Task, Team } from "@prisma/client";
 import { useEffect, useState } from "react";
 import SingleTask from "./SingleTask";
 
 interface DayHoursDisplay {
-  tasks: Task[];
+  tasks: (Task[] & {team?:Team});
 }
 
 const DayHoursDisplay = ({ tasks }: DayHoursDisplay) => {
@@ -36,6 +36,7 @@ const DayHoursDisplay = ({ tasks }: DayHoursDisplay) => {
 
     return () => clearInterval(intervalId);
   }, []);
+  
   return (
     <div className="min-h-[650px] flex flex-shrink-0 bg-gray-100 overflow-x-scroll">
       <div className="flex">
@@ -45,7 +46,7 @@ const DayHoursDisplay = ({ tasks }: DayHoursDisplay) => {
               key={index}
               className="w-[120px] border border-gray-200 relative"
             >
-              <p className="ml-2">
+              <p className="ml-2 pb-2">
                 {index < 10 ? `0${index}:00` : `${index}:00`}
               </p>
               <div

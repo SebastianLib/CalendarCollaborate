@@ -20,16 +20,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <ClerkProvider>
     <html lang="en">
       <body className={inter.className}>
         <ToastContainer />
-        <ClerkProvider>
           <AppWrapper>
             <Navbar />
             {children}
           </AppWrapper>
-        </ClerkProvider>
       </body>
     </html>
+    </ClerkProvider>
   );
 }

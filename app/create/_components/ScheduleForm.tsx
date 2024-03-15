@@ -3,15 +3,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { FormCalendar } from "./FormCalendar";
 import FormStartedHour from "./FormHour";
 import axios from "axios";
@@ -23,12 +14,16 @@ import FormColor from "./FormColor";
 import { getInfo } from "@/actions/getInfo";
 import { Team, User } from "@prisma/client";
 import FormTeam from "./FormTeam";
+import FormName from "./FormName";
+import { Form } from "@/components/ui/form";
+import FormDescriptionTeam from "./FormDescriptionTeam";
 
 export const formSchema = z.object({
   name: z.string().min(2).max(50),
   date: z.date({
     required_error: "A date is required.",
   }),
+  description:z.string().max(1000).optional(),
   start: z.string().min(2),
   end: z.string().min(2),
   color: z.string().min(2),
@@ -46,15 +41,11 @@ const ScheduleForm = ({teams }: ScheduleFormProps) => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      color: "blue",
-    },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setError("");
-    const { name, date, start, end, color, team } = { ...values };
+    const { name, date, start, end, color, team, description } = { ...values };
 
     const currentDate = String(date);
     const stringMonth = currentDate.split(" ")[1];
@@ -76,6 +67,7 @@ const ScheduleForm = ({teams }: ScheduleFormProps) => {
       setLoading(true);
       await axios.post("/api/create", {
         name,
+        description,
         startingHour: start,
         endingHour: end,
         totalStarting,
@@ -99,31 +91,16 @@ const ScheduleForm = ({teams }: ScheduleFormProps) => {
 
   return (
     <div className="mt-10">
-      <div className="w-full container mx-auto">
+      <div className="max-w-4xl container mx-auto">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-10">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>name</FormLabel>
-                    <FormControl>
-                      <Input
-                        className=""
-                        placeholder="Enter the task name"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              <FormName form={form}/>
               <FormCalendar form={form} />
+              <FormDescriptionTeam form={form} />
+              <FormColor form={form} />
               <FormStartedHour type={"start"} form={form} />
               <FormStartedHour type={"end"} form={form} />
-              <FormColor form={form} />
               <FormTeam form={form} teams={teams} />
             </div>
             <Button

@@ -1,4 +1,4 @@
-import { Task } from "@prisma/client";
+import { Task, Team } from "@prisma/client";
 import {
   Tooltip,
   TooltipContent,
@@ -8,11 +8,12 @@ import {
 import Link from "next/link";
 
 interface SingleTask {
-  task: Task;
+  task: (Task & {team?:Team});
   index: number
 }
 
 const SingleTask = ({ task, index }: SingleTask) => {
+  
   return (
     <div
       style={{ width: task.width, marginTop: (index * 70) }}
@@ -36,9 +37,12 @@ const SingleTask = ({ task, index }: SingleTask) => {
             </Link>
           </TooltipTrigger>
           <TooltipContent>
-            <div className="bg-white py-4 min-w-40">
-              <p className="text-black">{task.name}</p>
-              <Link className="font-bold" href={`schedule/${task.id}`}>
+            <div className="bg-white flex flex-col py-2 space-y-2 min-w-40">
+              <p className="text-black text-lg">name: <span className="font-semibold">{task.name}</span></p>
+              <p className="text-black text-lg">team: <span className="font-semibold">{task.team ? task.team.name : "no team"}</span></p>
+              <Link className="text-sm text-white p-2 rounded-xl w-fit" 
+              style={{background: task.color}}
+              href={`schedule/${task.id}`}>
                 see more
               </Link>
             </div>

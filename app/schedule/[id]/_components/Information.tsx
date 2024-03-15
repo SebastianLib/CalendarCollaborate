@@ -1,4 +1,4 @@
-import { Task } from "@prisma/client";
+import { Task, Team } from "@prisma/client";
 import EditName from "./EditName";
 import EditHour from "./EditHour";
 import { EditCalendar } from "./EditCalendar";
@@ -7,22 +7,33 @@ import DeleteTask from "./DeleteTask";
 import { auth } from "@clerk/nextjs";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import EditDescription from "./EditDescription";
+import { ClipboardList } from "lucide-react";
+import EditTeam from "./EditTeam";
 
 interface InformationProps {
-  singleTask: Task;
+  singleTask: (Task & {team?:Team | null});
+  teams: Team[]
 }
 
-const Information = ({ singleTask }: InformationProps) => {
-  const { name, startingHour, endingHour, userId:taskUserId, date, color } = singleTask;
+const Information = ({ singleTask, teams }: InformationProps) => {
+  const { name, description ,startingHour, endingHour, userId:taskUserId, date, color, team} = singleTask;
   const {userId} = auth();
+  
   const isEditable:boolean = taskUserId === userId
   return (
     <section className="container">
-      <div className="flex flex-col justify-center items-center mx-auto mt-10 py-10 max-w-2xl bg-gray-100 rounded-lg shadow-xl">
-        <h1 className="font-bold text-3xl">Task Infromation</h1>
-        <div className="flex flex-col w-full space-y-10 py-10 px-4 lg:px-20">
+      <div 
+      className="flex flex-col justify-center items-center mx-auto my-5 py-5 max-w-2xl bg-gray-200 taskBackground rounded-lg shadow-xl"
+      >
+        <h1 className="font-bold text-3xl flex items-center gap-1"><ClipboardList/> Task Infromation</h1>
+        <div className="flex flex-col w-full sm:space-y-4 space-y-10 py-10 px-2 lg:px-10">
+
+              <EditTeam isEditable={isEditable} team={team?.name} teams={teams}/>
 
               <EditName isEditable={isEditable} name={name}/>
+
+              <EditDescription isEditable={isEditable} description={description}/>
 
               <EditHour isEditable={isEditable} hour={startingHour} secondHour={endingHour} type="startingHour"/>
 
@@ -31,7 +42,10 @@ const Information = ({ singleTask }: InformationProps) => {
               <EditCalendar isEditable={isEditable} currentDate={date}/>
               
               <EditColor isEditable={isEditable} color={color}/>
-              {isEditable ? <DeleteTask/>:<Link href="/schedule"><Button>Go back</Button></Link>}
+              <div className="flex justify-center gap-2">
+              <Link href="/schedule"><Button size={"lg"}>Go back</Button></Link>
+              {isEditable && <DeleteTask/>}
+              </div>
           </div>
         </div>
     </section>

@@ -15,9 +15,9 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import SelectPeople from "./SelectPeople";
 import { User } from "@prisma/client";
-import axios, { AxiosHeaders } from "axios";
+import axios from "axios";
 import { toast } from "react-toastify";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export const formSchema = z.object({
   name: z.string().min(2).max(50),
@@ -26,6 +26,7 @@ export const formSchema = z.object({
 const CreateTeamForm = ({ people }: { people: User[] }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedPeople, setSelectedPeople] = useState<User[]>([]);
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -42,7 +43,7 @@ const CreateTeamForm = ({ people }: { people: User[] }) => {
       );
       
       toast.success("you have created a new task");
-      redirect("/teams")
+      router.push(`/teams/${newTeam.data.id}`)
     } catch (error) {
       console.log(error)
     } finally {

@@ -9,50 +9,37 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
-import { colors } from "@/lib/utils";
 import { X } from "lucide-react";
-
-interface EditColorProps {
-  color: string;
-  isEditable: boolean;
-}
+import { Textarea } from "@/components/ui/textarea";
 
 const FormSchema = z.object({
-  newColor: z.string(),
+  description: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
+  }),
 });
 
-const EditColor = ({ color, isEditable }: EditColorProps) => {
+const EditDescription = ({ description, isEditable}: { description: string, isEditable:boolean}) => {
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
-  const { id } = useParams<{ id: string }>();
-
+  const {id} = useParams<{ id: string }>();
+  
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      newColor: color,
+      description: description,
     },
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    let newData: { [key: string]: string } = {};
-    newData["color"] = data.newColor;
     try {
       setLoading(true);
-      await axios.put(`/api/schedule/${id}`, newData);
+      await axios.put(`/api/schedule/${id}`, data);
       toast.success("you have updated task");
     } catch (error) {
       console.log(error);
@@ -69,13 +56,13 @@ const EditColor = ({ color, isEditable }: EditColorProps) => {
           isEditing ? "hidden" : "flex flex-col sm:grid "
         } sm:grid-cols-3 items-center gap-4`}
       >
-        <div className="flex flex-col text-xl text-center sm:text-left col-span-2">
-          <h2 className="font-bold text-md">Color:</h2>
-          <div className="w-6 h-6 rounded-full self-center sm:self-start" style={{ background: color }} />
+        <div className={`flex flex-col text-xl text-center sm:text-left col-span-2 ${!isEditable && "col-span-3"}`}>
+          <h2 className="font-bold text-md">Description:</h2>
+          <p className="">{description}</p>
         </div>
-        <div className="flex w-full justify-center md:justify-end">
+        <div className={`flex w-full justify-center md:justify-end ${!isEditable && "hidden"}`}>
           <Button
-            className={`w-[50%] sm:w-28 ${!isEditable && "hidden"}`}
+            className= {`w-[50%] sm:w-28`}
             onClick={() => setIsEditing(true)}
           >
             Edit
@@ -90,29 +77,16 @@ const EditColor = ({ color, isEditable }: EditColorProps) => {
           <div className="flex items-center justify-center sm:justify-start gap-4 w-full">
             <FormField
               control={form.control}
-              name="newColor"
+              name="description"
               render={({ field }) => (
                 <FormItem>
-                  <Select onValueChange={field.onChange}>
-                    <FormControl className="w-[200px] md:w-[300px]">
-                      <SelectTrigger>
-                        <SelectValue placeholder="select color" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {colors.map((color, index) => (
-                        <SelectItem key={index} value={color}>
-                          <div className="flex items-center gap-2">
-                            <div
-                              className="w-4 h-4 rounded-full"
-                              style={{ background: color }}
-                            />{" "}
-                            <p>{color}</p>
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                  <Textarea
+              placeholder="Add some informations about this product"
+              className="resize-none w-[200px] md:w-[300px] "
+              {...field}
+            />
+                  </FormControl>
                 </FormItem>
               )}
             />
@@ -132,4 +106,4 @@ const EditColor = ({ color, isEditable }: EditColorProps) => {
   );
 };
 
-export default EditColor;
+export default EditDescription;

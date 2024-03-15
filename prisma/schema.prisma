@@ -11,6 +11,7 @@ model Task {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
   userId        String
   name          String
+  description String
   startingHour  String
   endingHour    String
   totalStarting Int
@@ -21,7 +22,7 @@ model Task {
   month         Int
   year          Int
   date          DateTime
-  team          Team?    @relation(fields: [teamId], references: [id])
+  team          Team?    @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId        String? @db.ObjectId
 }
 

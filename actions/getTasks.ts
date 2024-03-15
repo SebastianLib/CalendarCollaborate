@@ -27,6 +27,9 @@ export const getTasks = async ({ day, month, year, onlyTeam, teamId }: GetTasksP
           day: day,
           month: month,
           year: year,
+        },
+        include:{
+          team:true
         }
       });
     }
@@ -36,7 +39,7 @@ export const getTasks = async ({ day, month, year, onlyTeam, teamId }: GetTasksP
         day: day,
         month: month,
         year: year,
-        teamId
+        teamId,
       },
       include: {
         team: {
@@ -51,10 +54,11 @@ export const getTasks = async ({ day, month, year, onlyTeam, teamId }: GetTasksP
       },
     });
     
+    
     const teamTasks = allTasks.filter(task => task.team?.members.length! > 0);
     
     const combinedTasks = userTasks.concat(teamTasks);
-
+    
     const uniqueIds = new Set();
     const uniqueTasks = combinedTasks.filter(task => {
       if (!uniqueIds.has(task.id)) {
@@ -63,7 +67,7 @@ export const getTasks = async ({ day, month, year, onlyTeam, teamId }: GetTasksP
       }
       return false;
     });
-
+    
     return uniqueTasks;
   } catch (error) {
     console.error("[GET_DASHOBARD_COURSES]", error);

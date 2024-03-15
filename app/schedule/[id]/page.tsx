@@ -3,48 +3,37 @@ import Information from "./_components/Information";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
-const SinglePage = async({
-    params
-  }:{
-    params: {id: string;}
-  }) => {
+const SinglePage = async ({ params }: { params: { id: string } }) => {
+  const { userId } = auth();
 
-    const {userId} = auth();
+  if (!userId) redirect("/");
 
-    if(!userId) redirect("/")
+  const singleTask = await prisma.task.findUnique({
+    where: {
+      id: params.id,
+    },
+    include: {
+      team:true
+    },
+  });
 
-    const singleTask = await prisma.task.findUnique({
-      where: {
-        id: params.id,
-      },
-      include: {
-        team: {
-          where: {
-            OR: [
-              {
-                ownerId: userId,
-              },
-              {
-                members: {
-                  some: {
-                    clerkId: userId,
-                  },
-                },
-              },
-            ],
-          },
-          include: {
-            members: true,
-          },
+  const allTeams = await prisma.team.findMany({
+    include: {
+      members: {
+        where: {
+          clerkId: userId,
         },
       },
-    });
+    },
+  });
 
+  const teams = allTeams.filter(team => team.members.length > 0);
+  
   return (
     <div>
-      <Information singleTask={singleTask!}/>
+      <Information singleTask={singleTask!} teams={teams}/>
     </div>
-  )
-}
+  );
+};
 
-export default SinglePage
+export default SinglePage;

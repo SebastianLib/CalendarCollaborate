@@ -91,3 +91,15 @@ div.overflow-x-scroll::-webkit-scrollbar-thumb {
 div.overflow-x-scroll::-webkit-scrollbar-thumb:hover {
   background-color: rgb(34, 109, 230);
 }
+
+.taskBackground{
+  background: hsla(0, 0%, 100%, 1);
+
+  background: radial-gradient(circle, hsla(0, 0%, 100%, 1) 0%, hsla(0, 0%, 84%, 1) 100%);
+  
+  background: -moz-radial-gradient(circle, hsla(0, 0%, 100%, 1) 0%, hsla(0, 0%, 84%, 1) 100%);
+  
+  background: -webkit-radial-gradient(circle, hsla(0, 0%, 100%, 1) 0%, hsla(0, 0%, 84%, 1) 100%);
+  
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#FFFFFF", endColorstr="#D5D5D5", GradientType=1 );
+}

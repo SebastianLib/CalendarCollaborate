@@ -55,11 +55,11 @@ const EditName = ({ name, isEditable}: { name: string, isEditable:boolean}) => {
       <div
         className={`${
           isEditing ? "hidden" : "flex flex-col sm:grid "
-        } sm:grid-cols-2 items-center gap-4`}
+        } sm:grid-cols-3 items-center gap-4`}
       >
-        <div className="flex gap-2 text-xl">
+        <div className="flex flex-col text-xl text-center sm:text-left col-span-2">
           <h2 className="font-bold text-md">Name:</h2>
-          <p>{name}</p>
+          <p className="">{name}</p>
         </div>
         <div className="flex w-full justify-center md:justify-end">
           <Button
@@ -73,16 +73,16 @@ const EditName = ({ name, isEditable}: { name: string, isEditable:boolean}) => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className={`${isEditing ? "flex" : "hidden"} items-center gap-4`}
+          className={`${isEditing ? "flex flex-col sm:flex-row" : "hidden"} items-center gap-4`}
         >
-          <div className="flex items-center gap-4 w-full">
+          <div className="flex items-center justify-center sm:justify-start gap-4 w-full">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} />
+                    <Input className="w-[200px] md:w-[300px] " {...field} />
                   </FormControl>
                 </FormItem>
               )}
@@ -91,7 +91,7 @@ const EditName = ({ name, isEditable}: { name: string, isEditable:boolean}) => {
               Submit
             </Button>
           </div>
-          <div className="flex w-full justify-center md:justify-end">
+          <div className="flex justify-center md:justify-end">
             <X
               onClick={() => setIsEditing(false)}
               className="w-10 h-10 cursor-pointer"

@@ -73,9 +73,9 @@ export function EditCalendar({ currentDate, isEditable }: EditCalendarProps) {
       <div
         className={`${
           isEditing ? "hidden" : "flex flex-col sm:grid "
-        } sm:grid-cols-2 items-center gap-4`}
+        } sm:grid-cols-3 items-center gap-4`}
       >
-        <div className="flex gap-2 text-xl">
+        <div className="flex flex-col text-xl text-center sm:text-left col-span-2">
           <h2 className="font-bold text-md">Date:</h2>
           <p>{format(currentDate, "PPP")}</p>
         </div>
@@ -91,9 +91,9 @@ export function EditCalendar({ currentDate, isEditable }: EditCalendarProps) {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className={`${isEditing ? "flex" : "hidden"} items-center gap-4`}
+          className={`${isEditing ? "flex flex-col sm:flex-row" : "hidden"} items-center gap-4`}
         >
-          <div className="flex items-center gap-4 w-full">
+          <div className="flex items-center justify-center sm:justify-start gap-4 w-full">
             <FormField
               control={form.control}
               name="dob"
@@ -101,11 +101,11 @@ export function EditCalendar({ currentDate, isEditable }: EditCalendarProps) {
                 <FormItem className="flex flex-col">
                   <Popover>
                     <PopoverTrigger asChild>
-                      <FormControl>
+                      <FormControl className="w-[200px] md:w-[300px]">
                         <Button
                           variant={"outline"}
                           className={cn(
-                            "w-[240px] pl-3 text-left font-normal",
+                            "pl-3 text-left font-normal",
                             !field.value && "text-muted-foreground"
                           )}
                         >
@@ -131,13 +131,13 @@ export function EditCalendar({ currentDate, isEditable }: EditCalendarProps) {
               )}
             />
             <Button type="submit">Submit</Button>
-            <div className="flex w-full justify-center md:justify-end">
+            </div>
+            <div className="flex w-full justify-center sm:justify-end">
               <X
                 onClick={() => setIsEditing(false)}
                 className="w-10 h-10 cursor-pointer"
               />
             </div>
-          </div>
         </form>
       </Form>
     </div>
