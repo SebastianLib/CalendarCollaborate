@@ -15,7 +15,7 @@ const Members = ({ members, ownerId }: MembersProps) => {
   return (
     <div className="space-y-2">
       <h2 className="text-xl font-semibold flex items-center gap-1"><List/> Members</h2>
-      <div className=" border border-gray-100 rounded-md shadow-md">
+      <div className="rounded-md shadow-md">
         {members.map((member) => (
           <div key={member.id} className="flex justify-between items-center border-b p-4">
             <div className="flex gap-1">

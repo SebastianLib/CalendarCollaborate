@@ -16,7 +16,7 @@ export const getTasks = async ({ day, month, year, onlyTeam, teamId }: GetTasksP
     const { userId } = auth();
 
     if (!userId) {
-      throw new Error("Unauthorized");
+      return null;
     }
 
     let userTasks:Array<Task> = []

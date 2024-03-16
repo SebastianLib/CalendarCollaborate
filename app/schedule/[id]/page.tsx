@@ -13,7 +13,8 @@ const SinglePage = async ({ params }: { params: { id: string } }) => {
       id: params.id,
     },
     include: {
-      team:true
+      team:true,
+      user:true
     },
   });
 

@@ -71,7 +71,7 @@ const EditTeam = ({ team, isEditable, teams }: EditTeamProps) => {
       >
         <div className="flex flex-col text-xl text-center sm:text-left col-span-2">
           <h2 className="font-bold text-md">Team:</h2>
-          <p className="">{team}</p>
+          <p>{team}</p>
         </div>
         <div className="flex w-full justify-center md:justify-end">
           <Button

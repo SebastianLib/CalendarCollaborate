@@ -22,7 +22,7 @@ const FormDescriptionTeam = ({ form }: { form: UseFormReturn<z.infer<typeof form
           <FormLabel>Description</FormLabel>
           <FormControl>
           <Textarea
-              placeholder="Add some informations about this product"
+              placeholder="Add some informations about this task"
               className="resize-none"
               {...field}
             />

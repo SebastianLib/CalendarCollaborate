@@ -14,7 +14,7 @@ const Navbar = () => {
         </div>
       </SignedIn>
       <SignedOut>
-        <div className=" md:flex gap-4 text-black">
+        <div className="flex gap-4 text-black">
           <Link href="/sign-in">
             <Button variant="outline">Log in</Button>
           </Link>

@@ -25,6 +25,7 @@ const TeamTasks = () => {
           onlyTeam: true,
           teamId
         });
+        fetchedTasks?.sort((a, b) => a.totalStarting - b.totalStarting)
         setTasks(fetchedTasks);
       } catch (error) {
         console.error("Error fetching tasks:", error);

@@ -9,9 +9,9 @@ datasource db {
 
 model Task {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId        String
+  userId        String   
   name          String
-  description String
+  description   String
   startingHour  String
   endingHour    String
   totalStarting Int
@@ -22,8 +22,9 @@ model Task {
   month         Int
   year          Int
   date          DateTime
+  user          User    @relation(fields: [userId], references: [clerkId], onDelete: Cascade)
   team          Team?    @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  teamId        String? @db.ObjectId
+  teamId        String?  @db.ObjectId
 }
 
 model User {
@@ -36,6 +37,7 @@ model User {
   photo           String
   teamMemberships TeamMembership[]
   teams           Team[]
+  Task            Task[]
 }
 
 model Team {
@@ -50,7 +52,7 @@ model Team {
 model TeamMembership {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
   clerkId String
-  teamId  String 
+  teamId  String
   user    User   @relation(fields: [clerkId], references: [clerkId])
   team    Team   @relation(fields: [teamId], references: [id])
 }
