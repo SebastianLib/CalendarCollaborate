@@ -1,7 +1,7 @@
 "use server"
 import { prisma } from "@/db";
 import { auth } from "@clerk/nextjs";
-import { Task } from "@prisma/client";
+import { Task, User } from "@prisma/client";
 
 interface GetTasksProps {
   day: number;
@@ -19,7 +19,7 @@ export const getTasks = async ({ day, month, year, onlyTeam, teamId }: GetTasksP
       return null;
     }
 
-    let userTasks:Array<Task> = []
+    let userTasks: Array<Task & { user: User }> = [];
     if(!onlyTeam){
        userTasks = await prisma.task.findMany({
         where: {
@@ -29,7 +29,8 @@ export const getTasks = async ({ day, month, year, onlyTeam, teamId }: GetTasksP
           year: year,
         },
         include:{
-          team:true
+          team:true,
+          user:true
         }
       });
     }
@@ -51,6 +52,7 @@ export const getTasks = async ({ day, month, year, onlyTeam, teamId }: GetTasksP
             },
           },
         },
+        user:true
       },
     });
     

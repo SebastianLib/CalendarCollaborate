@@ -5,6 +5,7 @@ import { auth } from "@clerk/nextjs/server";
 import TeamTasks from "./_component/TeamTasks";
 import Options from "./_component/Options";
 import { UsersRound } from "lucide-react";
+import TeamStats from "./_component/TeamStats";
 
 const PageId = async ({
   params,
@@ -44,6 +45,7 @@ const PageId = async ({
         <Members members={team.members} ownerId={team.ownerId} />
         <TeamTasks />
         <Options ownerId={team.ownerId}/>
+        <TeamStats/>
       </div>
     </div>
   );
