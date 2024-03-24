@@ -14,7 +14,7 @@ import { Loader } from "lucide-react";
 
 const Navbar = () => {
   return (
-    <header className="py-4 px-6 sm:py-6 sm:px-10 bg-blue-500 text-white flex justify-between items-center">
+    <header className="h-[70px] px-6 sm:px-10 bg-blue-500 text-white flex justify-between items-center">
       <ClerkLoading>
         <Loader className="h-5 w-5 animate-spin" />
       </ClerkLoading>

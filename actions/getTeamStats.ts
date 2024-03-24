@@ -1,7 +1,4 @@
 "use server"
-import { prisma } from "@/db";
-import { auth } from "@clerk/nextjs";
-import { Task, User } from "@prisma/client";
 import { getTasks } from "./getTasks";
 
 interface GetTeamStatsProps {
