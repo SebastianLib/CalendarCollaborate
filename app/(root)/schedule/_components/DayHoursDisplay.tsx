@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import SingleTask from "./SingleTask";
 
 interface DayHoursDisplay {
-  tasks: (Task[] & {team?:Team});
+  tasks: Task[] & { team?: Team };
 }
 
 const DayHoursDisplay = ({ tasks }: DayHoursDisplay) => {
@@ -23,11 +23,11 @@ const DayHoursDisplay = ({ tasks }: DayHoursDisplay) => {
     const quarters = [[`${i}:00`], [`${i}:15`], [`${i}:30`], [`${i}:45`]];
     hours.push(quarters);
   }
-  
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       console.log("xdddd");
-      
+
       const currentDate = new Date();
       setCurrentHour(currentDate.getHours());
       setCurrentMinute(currentDate.getMinutes());
@@ -36,9 +36,12 @@ const DayHoursDisplay = ({ tasks }: DayHoursDisplay) => {
 
     return () => clearInterval(intervalId);
   }, []);
-  
+
   return (
-    <div className="min-h-[650px] flex flex-shrink-0 bg-gray-100 overflow-x-scroll">
+    <div
+      className="flex flex-shrink-0  bg-gray-100 overflow-x-scroll"
+      style={{ minHeight: tasks?.length < 8 ? 650 : 650 + tasks?.length * 70 }}
+    >
       <div className="flex">
         {hours.map((hours, index) => {
           return (
@@ -58,10 +61,7 @@ const DayHoursDisplay = ({ tasks }: DayHoursDisplay) => {
               <div className="flex">
                 {hours.map((hour, index) => {
                   return (
-                    <div
-                      key={index}
-                      className={`w-[30px] cursor-pointer`}
-                    >
+                    <div key={index} className={`w-[30px] cursor-pointer`}>
                       {tasks?.map((task, index) => {
                         return String(hour) === task?.startingHour ? (
                           <SingleTask key={task.id} task={task} index={index} />

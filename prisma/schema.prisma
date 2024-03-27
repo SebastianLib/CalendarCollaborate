@@ -9,7 +9,7 @@ datasource db {
 
 model Task {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId        String   
+  userId        String
   name          String
   description   String
   startingHour  String
@@ -22,7 +22,7 @@ model Task {
   month         Int
   year          Int
   date          DateTime
-  user          User    @relation(fields: [userId], references: [clerkId], onDelete: Cascade)
+  user          User     @relation(fields: [userId], references: [clerkId], onDelete: Cascade)
   team          Team?    @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId        String?  @db.ObjectId
 }
@@ -38,6 +38,16 @@ model User {
   teamMemberships TeamMembership[]
   teams           Team[]
   Task            Task[]
+  followers         Follower[]         @relation("UserFollowers")
+  Follower          Follower[]
+}
+
+model Follower {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  user     User   @relation(fields: [userId], references: [clerkId])
+  userId   String 
+  follower   User   @relation("UserFollowers", fields: [followerId], references: [clerkId])
+  followerId String 
 }
 
 model Team {

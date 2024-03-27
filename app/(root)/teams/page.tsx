@@ -14,7 +14,7 @@ const TeamsPage = async () => {
         },
       },
     },
-  });  
+  }); 
 
   if(!userId){
     return     <div className="mt-10">
@@ -24,7 +24,8 @@ const TeamsPage = async () => {
     </div>
   </div>
   }
-
+  const filteredTeams = teams.filter(team => team.members.every(member => member.user !== null));
+  
   const userInTeams = teams.filter(team=>team.members.some(user => user.clerkId === userId))
   const userNotInTeams = teams.filter(team=>!team.members.some(user => user.clerkId === userId))
   

@@ -27,4 +27,5 @@ export const linksArray = [
   { href: '/create', label: 'Create' },
   { href: '/schedule', label: 'Schedule' },
   { href: '/teams', label: 'Teams' },
+  { href: '/profile', label: 'My Profile' },
 ];
