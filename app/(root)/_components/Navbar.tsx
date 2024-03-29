@@ -6,6 +6,7 @@ import {
   SignedIn,
   SignedOut,
   UserButton,
+  auth,
 } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import MobileNavbar from "./MobileNavbar";
@@ -13,6 +14,9 @@ import { linksArray } from "@/lib/utils";
 import { Loader } from "lucide-react";
 
 const Navbar = () => {
+
+  const {userId} = auth();
+
   return (
     <header className="h-[70px] px-6 sm:px-10 bg-blue-500 text-white flex justify-between items-center">
       <ClerkLoading>
@@ -39,6 +43,9 @@ const Navbar = () => {
             <Link href={link.href}>{link.label}</Link>
           </li>
         ))}
+        <li>
+          <Link href={`/profile/${userId}`}>My profile</Link>
+        </li>
       </ul>
       <div className="flex sm:hidden">
         <MobileNavbar />

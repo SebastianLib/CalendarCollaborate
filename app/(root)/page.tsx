@@ -20,7 +20,6 @@ import Link from "next/link";
 export default async function Home() {
   const user = await currentUser();
   const headersList = headers();
-  const domain = headersList.get('host') || "";
   const fullUrl = headersList.get('referer') || "";
   
     if (user) {
@@ -31,7 +30,7 @@ export default async function Home() {
       });        
       if (!newUser) {
         try {
-          const response = await axios.post(`${fullUrl}api/createuser`, { user: user });
+           await axios.post(`${fullUrl}api/createuser`, { user: user });
         } catch (error) {
           console.log(error);
       }

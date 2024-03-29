@@ -38,8 +38,8 @@ model User {
   teamMemberships TeamMembership[]
   teams           Team[]
   Task            Task[]
-  followers         Follower[]         @relation("UserFollowers")
-  Follower          Follower[]
+  following         Follower[]         @relation("UserFollowers")
+  followers         Follower[]
 }
 
 model Follower {

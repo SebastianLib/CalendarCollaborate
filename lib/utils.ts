@@ -1,3 +1,4 @@
+import { auth } from "@clerk/nextjs"
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -27,5 +28,4 @@ export const linksArray = [
   { href: '/create', label: 'Create' },
   { href: '/schedule', label: 'Schedule' },
   { href: '/teams', label: 'Teams' },
-  { href: '/profile', label: 'My Profile' },
 ];
