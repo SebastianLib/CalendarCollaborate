@@ -1,7 +1,5 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Follower, User } from "@prisma/client";
-import Image from "next/image";
-import Link from "next/link";
 import SingleFollower from "./SingleFollower";
 
 interface ProfileModalProps {
@@ -22,31 +20,27 @@ const ProfileModal = ({ followers, following, type }: ProfileModalProps) => {
         </h1>
         <div>
           {type === "followers" ? (
-            <div>
-              {followers?.map((follower) => (
-                <SingleFollower
-                  key={follower.follower.id}
-                  follower={follower.follower}
-                />
-              ))}
-            </div>
+            followers?.length === 0 ? (
+              <p className="text-center">No followers</p>
+            ) : (
+              <div>
+                {followers?.map((follower) => (
+                  <SingleFollower
+                    key={follower.follower.id}
+                    follower={follower.follower}
+                  />
+                ))}
+              </div>
+            )
+          ) : following?.length === 0 ? (
+            <p className="text-center">No following</p>
           ) : (
             <div>
               {following?.map((follower) => (
-                <Link
+                <SingleFollower
                   key={follower.user.id}
-                  href={follower.user.clerkId}
-                  className="flex items-center gap-2 hover:bg-slate-50 transition p-4"
-                >
-                  <Image
-                    className="rounded-full"
-                    src={follower.user.photo}
-                    width={30}
-                    height={30}
-                    alt="user image"
-                  />
-                  <p>{follower.user.username}</p>
-                </Link>
+                  follower={follower.user}
+                />
               ))}
             </div>
           )}

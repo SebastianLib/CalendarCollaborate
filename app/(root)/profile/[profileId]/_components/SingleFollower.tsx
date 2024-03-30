@@ -72,7 +72,7 @@ const SingleFollower = ({ follower }: SingleFollowerProps) => {
           height={30}
           alt="user image"
         />
-        <p>{follower.username} elooooo</p>
+        <p>{follower.username}</p>
       </div>
       {isFollowing ? (
         <Button

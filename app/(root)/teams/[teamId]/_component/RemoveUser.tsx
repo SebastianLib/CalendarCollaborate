@@ -13,7 +13,8 @@ const RemoveUser = ({ userId }: RemoveUserProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
-  const handleRemoveUser = async () => {
+  const handleRemoveUser = async (e:any) => {
+    e.preventDefault();
     try {
       setLoading(true);
       await axios.delete(`/api/teams/${params.teamId}`, {

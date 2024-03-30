@@ -3,11 +3,14 @@ import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import UserProfile from "./_components/UserProfile";
 import { getFollowers } from "@/actions/getFollowers";
+import SearchProfile from "./_components/SearchProfile";
+import { getSearchUsers } from "@/actions/getSearchUsers";
 
 const page = async ({ params }: { params: { profileId: string } }) => {
   const { profileId } = params;
   
   const {userId} = auth();
+  const searchUsers = await getSearchUsers( {profileId:profileId} );
   const user = await prisma.user.findUnique({
     where: {
       clerkId: profileId,
@@ -38,6 +41,7 @@ const page = async ({ params }: { params: { profileId: string } }) => {
   
   return (
     <div className="mt-10 container mx-auto">
+      <SearchProfile searchUsers={searchUsers} profileId={profileId}/>
       <h1 className="text-center text-3xl font-bold">
         {user.firstName} Profile
       </h1>
