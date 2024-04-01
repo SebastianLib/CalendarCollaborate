@@ -44,7 +44,7 @@ const PageId = async ({
       <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
         <Members members={team.members} ownerId={team.ownerId} />
         <TeamTasks />
-        <Options ownerId={team.ownerId}/>
+        <Options ownerId={team.ownerId} members={team.members}/>
         <TeamStats/>
       </div>
     </div>

@@ -11,15 +11,16 @@ interface Day {
 
 function getFirstDayOfMonthName(year: number, month: number) {
     const firstDayOfMonth = new Date(year, month, 1);
+      
     const dayIndex = firstDayOfMonth.getDay();
     return firstDayNames[dayIndex];
   }
 
-const GetNumberOfDaysInAllMonths = () => {
+const getNumberOfDaysInAllMonths = (year:number) => {
     let numberOfDaysInAllMonths = [];
     for (let i = 0; i < 12; i++) {
-      let number = new Date(2024, i + 1, 0).getDate();
-      const firstDayName = getFirstDayOfMonthName(2024, i);
+      let number = new Date(year, i + 1, 0).getDate();
+      const firstDayName = getFirstDayOfMonthName(year, i);
 
       numberOfDaysInAllMonths.push({
         number: number,
@@ -29,9 +30,9 @@ const GetNumberOfDaysInAllMonths = () => {
     return numberOfDaysInAllMonths;
   };
 
-export const getCalendar = () => {
+export const getCalendar = (year:number) => {
     const calendar:Calendar = [];
-    const numberOfDaysInAllMonths = GetNumberOfDaysInAllMonths();
+    const numberOfDaysInAllMonths = getNumberOfDaysInAllMonths(year);
     numberOfDaysInAllMonths.forEach((month) => {
       let dayIndex = dayNames.findIndex((day) => day === month.firstDayName);
       let arrayOfDays = [];
@@ -48,5 +49,6 @@ export const getCalendar = () => {
       }
       calendar.push(arrayOfDays);
     });
+    
     return calendar
   };

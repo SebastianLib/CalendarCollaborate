@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { useAuth } from "@clerk/nextjs";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
@@ -52,7 +51,8 @@ const RemoveTeamOrUser = ({ ownerId }: RemoveTeamOrUserProps) => {
   return (
         <AlertDialog>
         <AlertDialogTrigger
-        className="bg-red-500 text-white px-4 py-2 rounded-md"
+        className="bg-red-500 text-white max-w-[200px] w-full text-md px-4 py-2 rounded-md
+        hover:bg-red-500/90 transition"
         >
          {userId === ownerId ? "Remove Team" : "Left this team"}
         </AlertDialogTrigger>

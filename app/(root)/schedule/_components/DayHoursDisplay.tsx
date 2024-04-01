@@ -26,7 +26,6 @@ const DayHoursDisplay = ({ tasks }: DayHoursDisplay) => {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      console.log("xdddd");
 
       const currentDate = new Date();
       setCurrentHour(currentDate.getHours());
