@@ -55,7 +55,7 @@ const ScheduleForm = ({teams }: ScheduleFormProps) => {
       (month: string) => month === stringMonth
     );
 
-    const { totalStarting, totalEnding, width } = getInfo(start, end);
+    const { totalStarting, totalEnding } = getInfo(start, end);
 
     if (totalStarting >= totalEnding) {
       return setError(
@@ -70,9 +70,6 @@ const ScheduleForm = ({teams }: ScheduleFormProps) => {
         description,
         startingHour: start,
         endingHour: end,
-        totalStarting,
-        totalEnding,
-        width,
         day,
         month,
         year,

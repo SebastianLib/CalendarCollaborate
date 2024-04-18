@@ -9,14 +9,15 @@ import Link from "next/link";
 
 interface SingleTask {
   task: (Task & {team?:Team});
-  index: number
+  index: number,
+  width: number,
 }
 
-const SingleTask = ({ task, index }: SingleTask) => {
-  
+const SingleTask = ({ task, index, width }: SingleTask) => {
+
   return (
     <div
-      style={{ width: task.width, marginTop: (index * 70) }}
+      style={{ width: width, marginTop: (index * 70) }}
     >
       <TooltipProvider>
         <Tooltip>
@@ -28,10 +29,10 @@ const SingleTask = ({ task, index }: SingleTask) => {
             >
               <p
                 className="text-white line-clamp-1 pl-1 flex"
-                style={{ width: task.width }}
+                style={{ width: width }}
               >
-                {task.name.slice(0, task.width / 11)}
-                {task.name.length > task.width / 12 ? "..." : null}
+                {task.name.slice(0, width / 11)}
+                {task.name.length > width / 12 ? "..." : null}
               </p>
             </div>
             </Link>

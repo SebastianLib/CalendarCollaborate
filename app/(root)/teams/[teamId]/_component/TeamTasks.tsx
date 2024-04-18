@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import AllTeamTasks from "./AllTeamTasks";
 import { ClipboardList } from "lucide-react";
 import { useParams } from "next/navigation";
+import { GetTeamStats } from "@/actions/getTeamStats";
 
 const TeamTasks = () => {
   const { day, month, year } = useAppContext();
@@ -18,15 +19,17 @@ const TeamTasks = () => {
     const getAllTasks = async () => {
       try {
         setLoading(true);
-        const fetchedTasks = await getTasks({
+        const tasks = await GetTeamStats({
           day,
           month,
           year,
           onlyTeam: true,
           teamId
         });
-        fetchedTasks?.sort((a, b) => a.totalStarting - b.totalStarting)
-        setTasks(fetchedTasks);
+        // console.log(fetchedTasks);
+        
+        // fetchedTasks?.sort((a, b) => a.totalStarting - b.totalStarting)
+        setTasks(tasks);
       } catch (error) {
         console.error("Error fetching tasks:", error);
       } finally {

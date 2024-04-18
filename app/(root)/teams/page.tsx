@@ -15,6 +15,7 @@ const TeamsPage = async () => {
       },
     },
   }); 
+  
 
   if(!userId){
     return     <div className="mt-10">

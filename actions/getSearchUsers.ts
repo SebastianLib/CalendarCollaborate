@@ -1,7 +1,6 @@
 "use server"
 import { prisma } from "@/db";
 import { auth } from "@clerk/nextjs";
-import { RefObject } from "react";
 
 interface Props{
     input?: string;

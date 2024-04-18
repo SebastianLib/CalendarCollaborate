@@ -26,6 +26,7 @@ const AppContext = createContext<AppContextProps>({
 
 export function AppWrapper({ children }: { children: React.ReactNode }) {
   const currentDate = new Date();
+  
   const [year, setYear] = useState(currentDate.getFullYear());
   const [month, setMonth] = useState(currentDate.getMonth());
   const [day, setDay] = useState(currentDate.getDate());

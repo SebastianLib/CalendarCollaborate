@@ -1,17 +1,14 @@
 "use server"
 import { prisma } from "@/db";
 import { auth } from "@clerk/nextjs";
-import { Task, User } from "@prisma/client";
 
 interface GetTasksProps {
   day: number;
   month: number;
   year: number;
-  onlyTeam?: boolean;
-  teamId?: string;
 }
 
-export const getTasks = async ({ day, month, year, onlyTeam, teamId }: GetTasksProps) => {
+export const getTasks = async ({ day, month, year }: GetTasksProps) => {
   try {
     const { userId } = auth();
 
@@ -19,57 +16,35 @@ export const getTasks = async ({ day, month, year, onlyTeam, teamId }: GetTasksP
       return null;
     }
 
-    let userTasks: Array<Task & { user: User }> = [];
-    if(!onlyTeam){
-       userTasks = await prisma.task.findMany({
-        where: {
-          userId,
-          day: day,
-          month: month,
-          year: year,
-        },
-        include:{
-          team:true,
-          user:true
-        }
-      });
-    }
-
     const allTasks = await prisma.task.findMany({
-      where:{
+      where: {
         day: day,
         month: month,
-        year: year,
-        teamId,
-      },
+        year: year
+      }
+      ,
       include: {
         team: {
           include: {
-            members: {
-              where: {
-                clerkId: userId,
-              },
-            },
+            members: true,
           },
         },
-        user:true
       },
     });
-    
-    
-    const teamTasks = allTasks.filter(task => task.team?.members.length! > 0);
-    
-    const combinedTasks = userTasks.concat(teamTasks);
-    
+
+    const aviableTasks = allTasks.filter(task => task.team?.members.some(user => user.clerkId === userId) || task.userId === userId)
+
     const uniqueIds = new Set();
-    const uniqueTasks = combinedTasks.filter(task => {
+    const uniqueTasks = aviableTasks.filter(task => {
       if (!uniqueIds.has(task.id)) {
         uniqueIds.add(task.id);
         return true;
       }
       return false;
     });
+    console.log(uniqueTasks);
     
+
     return uniqueTasks;
   } catch (error) {
     console.error("[GET_DASHOBARD_COURSES]", error);

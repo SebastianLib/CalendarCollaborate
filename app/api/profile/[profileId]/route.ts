@@ -1,6 +1,5 @@
 import { prisma } from "@/db";
 import { auth } from "@clerk/nextjs";
-import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 export async function POST(

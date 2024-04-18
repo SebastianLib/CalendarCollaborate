@@ -14,10 +14,7 @@ model Task {
   description   String
   startingHour  String
   endingHour    String
-  totalStarting Int
-  totalEnding   Int
   color         String
-  width         Int
   day           Int
   month         Int
   year          Int
@@ -46,14 +43,14 @@ model Follower {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   user     User   @relation(fields: [userId], references: [clerkId])
   userId   String 
-  follower   User   @relation("UserFollowers", fields: [followerId], references: [clerkId])
+  follower   User   @relation("UserFollowers", fields: [followerId], references: [clerkId], onDelete: Cascade)
   followerId String 
 }
 
 model Team {
   id      String           @id @default(auto()) @map("_id") @db.ObjectId
   name    String
-  owner   User             @relation(fields: [ownerId], references: [clerkId])
+  owner   User             @relation(fields: [ownerId], references: [clerkId], onDelete: Cascade)
   ownerId String
   members TeamMembership[]
   tasks   Task[]
@@ -62,7 +59,7 @@ model Team {
 model TeamMembership {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
   clerkId String
-  teamId  String
-  user    User   @relation(fields: [clerkId], references: [clerkId])
-  team    Team   @relation(fields: [teamId], references: [id])
+  teamId  String 
+  user    User   @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
+  team    Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
 }

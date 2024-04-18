@@ -1,5 +1,4 @@
 import { prisma } from "@/db";
-import { User } from "@prisma/client";
 
 export async function createUser(user:{
     clerkId: string;

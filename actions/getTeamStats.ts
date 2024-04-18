@@ -1,28 +1,34 @@
 "use server"
-import { getTasks } from "./getTasks";
+import { prisma } from "@/db";
 
 interface GetTeamStatsProps {
   day: number;
   month: number;
   year: number;
   onlyTeam?: boolean;
-  teamId?: string;
+  teamId: string;
 }
 
 export const GetTeamStats = async ({ day, month, year, onlyTeam, teamId }: GetTeamStatsProps) => {
   try {
-    const tasks = await getTasks({day, month, year, onlyTeam, teamId})
+    const tasks = await prisma.task.findMany({
+      where: {
+        day: day,
+        month: month,
+        year: year,
+        teamId,
+      }, include: {
+        team: true,
+        user: true,
+      }
+    }
+
+    )
     if (!tasks) {
       return null
     }
+    return tasks
 
-    type obj = {[key: string] : number}
-    const usersStats:obj = {};
-    tasks?.forEach(task => {
-        usersStats[task.user.username] = (usersStats[task.user.username] || 0) + 1; 
-    });
-  
-    return usersStats;
   } catch (error) {
     console.error("[GET_DASHOBARD_COURSES]", error);
     throw error;

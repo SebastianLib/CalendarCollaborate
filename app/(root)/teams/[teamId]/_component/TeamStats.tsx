@@ -1,8 +1,6 @@
 "use client"
-import { getTasks } from "@/actions/getTasks";
 import { GetTeamStats } from "@/actions/getTeamStats";
 import { useAppContext } from "@/context";
-import { Task } from "@prisma/client";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Pie } from "react-chartjs-2";
@@ -18,14 +16,19 @@ const TeamStats = () => {
   useEffect(() => {
     const getAllTasks = async () => {
       try {
-        const data = await GetTeamStats({
+        const tasks = await GetTeamStats({
           day,
           month,
           year,
           onlyTeam: true,
           teamId,
         });
-        setTeamStats(data);
+        const usersStats: { [key: string]: number }= {};
+        tasks?.forEach(task => {
+          usersStats[task.user.username] = (usersStats[task.user.username] || 0) + 1;
+        });
+        setTeamStats(usersStats);
+        
       } catch (error) {
         console.error("Error fetching tasks:", error);
       }
@@ -38,7 +41,7 @@ const TeamStats = () => {
   }
 
   const chartData = {
-    labels: Object.keys(teamStats), // Remove the outer array wrapper
+    labels: Object.keys(teamStats), 
     datasets: [
       {
         data: Object.values(teamStats),
