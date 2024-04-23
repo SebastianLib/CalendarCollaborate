@@ -14,13 +14,12 @@ export async function POST(req:Request) {
 
     const clerkIds = selectedPeople.map((user:any) => user.clerkId);
     const teamMemberships = clerkIds.map((clerkId: string) => ({
-        clerkId,
-      })).concat({clerkId: userId});
-
+        clerkId:clerkId,
+      })).concat({clerkId: userId, role:"owner"});
+      
       const newTeam = await prisma.team.create({
         data: {
           name,
-          ownerId: userId,
           members: {
             create: teamMemberships,
           },

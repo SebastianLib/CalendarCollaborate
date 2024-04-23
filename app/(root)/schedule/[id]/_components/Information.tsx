@@ -1,4 +1,4 @@
-import { Task, Team, User } from "@prisma/client";
+import { Follower, PeopleTasks, Task, Team, User } from "@prisma/client";
 import EditName from "./EditName";
 import EditHour from "./EditHour";
 import { EditCalendar } from "./EditCalendar";
@@ -11,13 +11,20 @@ import EditDescription from "./EditDescription";
 import { ClipboardList } from "lucide-react";
 import EditTeam from "./EditTeam";
 import Image from "next/image";
+import EditPeople from "./EditPeople";
 
 interface InformationProps {
-  singleTask: Task & { team?: Team | null; user: User};
+  singleTask: Task & {
+    team?: Team | null;
+    user: User;
+    peopleTasks: Array<PeopleTasks & { user: User }>;
+  };
   teams: Team[];
+  following?: User[]
 }
 
-const Information = ({ singleTask, teams }: InformationProps) => {
+
+const Information = ({ singleTask, teams, following }: InformationProps) => {
   const {
     name,
     description,
@@ -28,10 +35,12 @@ const Information = ({ singleTask, teams }: InformationProps) => {
     color,
     team,
     user,
+    peopleTasks,
   } = singleTask;
   const { userId } = auth();
 
   const isEditable: boolean = taskUserId === userId;
+
   return (
     <section className="container">
       <div className="flex flex-col justify-center items-center mx-auto my-5 py-5 max-w-2xl bg-gray-200 taskBackground rounded-lg shadow-xl">
@@ -42,18 +51,20 @@ const Information = ({ singleTask, teams }: InformationProps) => {
           <div className="flex flex-col gap-1 text-xl text-center sm:text-left col-span-2">
             <h2 className="font-bold text-md">Creator:</h2>
             <div className="flex justify-center sm:justify-start gap-1">
-            <Image
-              key={user.id}
-              src={user.photo}
-              width={30}
-              height={30}
-              alt="user image"
-              className="rounded-full"
-            />
-            <p>{user.username}</p>
+              <Image
+                key={user.id}
+                src={user.photo}
+                width={30}
+                height={30}
+                alt="user image"
+                className="rounded-full"
+              />
+              <p>{user.username}</p>
             </div>
           </div>
-          <EditTeam isEditable={isEditable} team={team?.name} teams={teams} />
+          {team && <EditTeam isEditable={isEditable} team={team?.name} teams={teams} />}
+
+          {peopleTasks.length > 0 && <EditPeople isEditable={isEditable} people={peopleTasks} following={following}/>}
 
           <EditName isEditable={isEditable} name={name} />
 

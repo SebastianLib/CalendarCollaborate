@@ -1,16 +1,13 @@
 "use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
 } from "@/components/ui/form";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -52,7 +49,7 @@ const EditTeam = ({ team, isEditable, teams }: EditTeamProps) => {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
       setLoading(true);
-      await axios.put(`/api/schedule/${id}`, data);
+      await axios.put(`/api/schedule/${id}`, {type:"", data:data});
       toast.success("you have updated task");
     } catch (error) {
       console.log(error);

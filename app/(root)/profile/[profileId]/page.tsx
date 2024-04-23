@@ -5,29 +5,17 @@ import UserProfile from "./_components/UserProfile";
 import { getFollowers } from "@/actions/getFollowers";
 import SearchProfile from "./_components/SearchProfile";
 import { getSearchUsers } from "@/actions/getSearchUsers";
+import { getUserInfo} from "@/actions/getUserInfo";
 
 const page = async ({ params }: { params: { profileId: string } }) => {
   const { profileId } = params;
   
   const {userId} = auth();
+  if (!userId) {
+    redirect("/");
+  }
   const searchUsers = await getSearchUsers( {profileId:profileId} );
-  const user = await prisma.user.findUnique({
-    where: {
-      clerkId: profileId,
-    },include:{
-      followers:{
-        include:{
-          follower: true
-        }
-      },
-      following:{
-        include:{
-          user: true
-        }
-      },
-    },
-
-  });
+  const user = await getUserInfo(userId)
   if (!user) {
     redirect("/");
   }

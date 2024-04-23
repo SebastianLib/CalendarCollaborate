@@ -1,4 +1,4 @@
-import { firstDayNames, dayNames } from "@/lib/utils";
+import { firstDayNames, dayNames } from "@/utils/arrays";
 
 interface Day {
     number: number;

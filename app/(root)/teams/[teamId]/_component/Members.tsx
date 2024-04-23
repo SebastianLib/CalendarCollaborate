@@ -1,4 +1,3 @@
-import { auth } from "@clerk/nextjs";
 import { TeamMembership, User } from "@prisma/client";
 import { Crown, List } from "lucide-react";
 import Image from "next/image";
@@ -7,12 +6,11 @@ import Link from "next/link";
 
 interface MembersProps {
   members: (TeamMembership & { user: User })[];
-  ownerId: string;
+  isOwner: boolean;
 }
 
-const Members = ({ members, ownerId }: MembersProps) => {
-  const { userId } = auth();
-
+const Members = ({ members, isOwner}: MembersProps) => {
+ 
   return (
     <div className="space-y-2">
       <h2 className="text-xl font-semibold flex items-center gap-1"><List/> Members</h2>
@@ -32,11 +30,11 @@ const Members = ({ members, ownerId }: MembersProps) => {
             </div>
 
             <div>
-              {userId === ownerId && member.user.clerkId !== ownerId ? (
+              {member.role === "member" && isOwner ? (
                 <RemoveUser userId={member.id}/>
               ) : (
                 <p className="font-medium">
-                  {member.user.clerkId === ownerId ? (
+                  {member.role === "owner" ? (
                     <span className="text-yellow-500 flex gap-1">
                       <Crown /> owner
                     </span>

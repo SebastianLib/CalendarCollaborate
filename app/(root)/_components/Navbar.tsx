@@ -10,7 +10,7 @@ import {
 } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import MobileNavbar from "./MobileNavbar";
-import { linksArray } from "@/lib/utils";
+import { linksArray } from "@/utils/arrays";
 import { Loader } from "lucide-react";
 
 const Navbar = () => {

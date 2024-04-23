@@ -4,6 +4,8 @@ import { Task, Team } from "@prisma/client";
 import { useEffect, useState } from "react";
 import SingleTask from "./SingleTask";
 import { getInfo } from "@/actions/getInfo";
+import { renderHours } from "@/utils/renderHours";
+import { useRouter } from "next/navigation";
 
 interface DayHoursDisplay {
   tasks: Task[] & { team?: Team };
@@ -11,32 +13,25 @@ interface DayHoursDisplay {
 
 const DayHoursDisplay = ({ tasks }: DayHoursDisplay) => {
   const { isToday } = useAppContext();
-
-  const initialMinutes = new Date().getMinutes();
+  const router = useRouter();
   const initialhours = new Date().getHours();
+  const currentDate = new Date();
 
   const [currentHour, setCurrentHour] = useState(initialhours);
-  const [currentMinute, setCurrentMinute] = useState(initialMinutes);
-  const [percent, setPercent] = useState((currentMinute / 60) * 100);
-
-  let hours = [];
-  for (let i = 0; i < 24; i++) {
-    const quarters = [[`${i}:00`], [`${i}:15`], [`${i}:30`], [`${i}:45`]];
-    hours.push(quarters);
-  }
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-
-      const currentDate = new Date();
-      setCurrentHour(currentDate.getHours());
-      setCurrentMinute(currentDate.getMinutes());
-      setPercent((currentMinute / 60) * 100);
-    }, 60000);
-
-    return () => clearInterval(intervalId);
-  }, []);
-
+  const [percent, setPercent] = useState((currentDate.getMinutes() / 60) * 100);
+  
+  const hours = renderHours();
+    
+    useEffect(() => {
+      const intervalId = setInterval(() => {
+        const currentDate = new Date();
+        setCurrentHour(currentDate.getHours());
+        setPercent((currentDate.getMinutes() / 60) * 100);
+        router.refresh();
+      }, 60000);
+    
+      return () => clearInterval(intervalId);
+    }, []);
   return (
     <div
       className="flex flex-shrink-0  bg-gray-100 overflow-x-scroll"

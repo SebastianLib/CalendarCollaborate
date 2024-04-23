@@ -1,5 +1,4 @@
 "use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -22,8 +21,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
-import { getAllHours } from "@/actions/getHours";
-import { getInfo } from "@/actions/getInfo";
+import { renderHours } from "@/utils/renderHours";
 import { X } from "lucide-react";
 
 interface EditHourProps {
@@ -43,7 +41,7 @@ const EditHour = ({ hour, type, secondHour, isEditable }: EditHourProps) => {
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
-  const hours = getAllHours();
+  const hours = renderHours().flat();
   const { id } = useParams<{ id: string }>();
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -74,18 +72,10 @@ const EditHour = ({ hour, type, secondHour, isEditable }: EditHourProps) => {
         newData["startingHour"] = secondHour;
       }
     }
-    const { totalStarting, totalEnding, width } = getInfo(
-      newData["startingHour"].toString(),
-      newData["endingHour"].toString()
-    );
-
-    (newData["totalStarting"] = totalStarting),
-      (newData["totalEnding"] = totalEnding),
-      (newData["width"] = width);
-
+    
     try {
       setLoading(true);
-      await axios.put(`/api/schedule/${id}`, newData);
+      await axios.put(`/api/schedule/${id}`, {type:"", data:newData});
       toast.success("you have updated task");
     } catch (error) {
       console.log(error);

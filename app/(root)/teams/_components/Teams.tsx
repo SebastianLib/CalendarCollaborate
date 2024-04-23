@@ -10,7 +10,6 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 
 interface Props extends Team {
-  owner: User;
   members: (TeamMembership & { user: User })[];
 }
 

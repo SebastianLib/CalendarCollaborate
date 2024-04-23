@@ -17,10 +17,10 @@ import {
 } from "@/components/ui/alert-dialog"
 
 interface RemoveTeamOrUserProps {
-  ownerId: string;
+  isOwner: boolean;
 }
 
-const RemoveTeamOrUser = ({ ownerId }: RemoveTeamOrUserProps) => {
+const RemoveTeamOrUser = ({ isOwner }: RemoveTeamOrUserProps) => {
   const { userId } = useAuth();
   const { teamId } = useParams<{ teamId: string }>();
   const [loading, setLoading] = useState<boolean>(false);
@@ -36,9 +36,10 @@ const RemoveTeamOrUser = ({ ownerId }: RemoveTeamOrUserProps) => {
       await axios.delete(`/api/teams/${teamId}/${type}`, {
         data: {
           userIdToDelete: userId,
+          isOwner: isOwner
         },
       });
-      toast.success("you have left the team");
+      toast.success(type === "removeTeam" ? "you have removed the team" : "you have left the team");
       router.push("/teams");
     } catch (error) {
       console.log(error);
@@ -54,7 +55,7 @@ const RemoveTeamOrUser = ({ ownerId }: RemoveTeamOrUserProps) => {
         className="bg-red-500 text-white max-w-[200px] w-full text-md px-4 py-2 rounded-md
         hover:bg-red-500/90 transition"
         >
-         {userId === ownerId ? "Remove Team" : "Left this team"}
+         {isOwner ? "Remove Team" : "Left this team"}
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -66,7 +67,7 @@ const RemoveTeamOrUser = ({ ownerId }: RemoveTeamOrUserProps) => {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction  disabled={loading}
-            onClick={() => handleLeftOrRemove({ type: userId === ownerId ? "removeTeam" : "leftTeam"})}
+            onClick={() => handleLeftOrRemove({ type: isOwner ? "removeTeam" : "leftTeam"})}
             >Continue</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

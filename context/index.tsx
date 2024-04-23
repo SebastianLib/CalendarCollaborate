@@ -30,13 +30,10 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
   const [year, setYear] = useState(currentDate.getFullYear());
   const [month, setMonth] = useState(currentDate.getMonth());
   const [day, setDay] = useState(currentDate.getDate());
-  const [currentYear, currentSetYear] = useState(currentDate.getFullYear());
-  const [currentMonth, currentSetMonth] = useState(currentDate.getMonth());
-  const [currentDay, currentSetDay] = useState(currentDate.getDate());
   const [isToday, setIsToday] = useState<boolean>(false);
 
   useEffect(() => {
-    if (currentMonth === month && currentDay === day && currentYear === year) {
+    if (currentDate.getMonth() === month && currentDate.getDate() === day && currentDate.getFullYear() === year) {
       setIsToday(true);
     } else {
       setIsToday(false);

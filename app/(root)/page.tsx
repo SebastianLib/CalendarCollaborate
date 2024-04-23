@@ -1,26 +1,19 @@
-
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/db";
 import {
   ClerkLoaded,
   ClerkLoading,
-  SignUpButton,
   SignedIn,
   SignedOut,
-  auth,
   currentUser,
-  useUser,
 } from "@clerk/nextjs";
 import axios from "axios";
 import { Loader } from "lucide-react";
-import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 
 export default async function Home() {
   const user = await currentUser();
-  const headersList = headers();
-  const fullUrl = headersList.get('referer') || "";
   
     if (user) {
       const newUser = await prisma.user.findUnique({
@@ -30,7 +23,7 @@ export default async function Home() {
       });        
       if (!newUser) {
         try {
-           await axios.post(`${fullUrl}api/createuser`, { user: user });
+           await axios.post(`/api/createuser`, { user: user });
         } catch (error) {
           console.log(error);
       }

@@ -1,6 +1,6 @@
 import { UseFormReturn } from "react-hook-form";
 import { formSchema } from "./ScheduleForm";
-import { getAllHours } from "@/actions/getHours";
+import { renderHours } from "@/utils/renderHours";
 import { z } from "zod";
 
 import {
@@ -23,9 +23,9 @@ const FormStartedHour = ({
   type,
 }: {
   form: UseFormReturn<z.infer<typeof formSchema>>;
-  type: "start" | "end";
+  type: "startingHour" | "endingHour";
 }) => {
-  const hours = getAllHours();
+  const hours = renderHours().flat();
 
   return (
     <FormField
@@ -33,11 +33,11 @@ const FormStartedHour = ({
       name={type}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{type === "start" ? "Starting hour" : "Ending Hour"}</FormLabel>
+          <FormLabel>{type === "startingHour" ? "Starting hour" : "Ending Hour"}</FormLabel>
           <Select onValueChange={field.onChange}>
             <FormControl>
               <SelectTrigger>
-                <SelectValue placeholder={`select ${type === "start" ? "starting" : "ending"} time`} />
+                <SelectValue placeholder={`select ${type === "startingHour" ? "starting" : "ending"} time`} />
               </SelectTrigger>
             </FormControl>
             <SelectContent>

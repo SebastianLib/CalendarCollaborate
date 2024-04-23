@@ -2,6 +2,7 @@ import { prisma } from "@/db";
 import Information from "./_components/Information";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
+import { getUserInfo } from "@/actions/getUserInfo";
 
 const SinglePage = async ({ params }: { params: { id: string } }) => {
   const { userId } = auth();
@@ -14,7 +15,12 @@ const SinglePage = async ({ params }: { params: { id: string } }) => {
     },
     include: {
       team:true,
-      user:true
+      user:true,
+      peopleTasks:{
+        include:{
+          user:true
+        }
+      }
     },
   });
 
@@ -28,11 +34,18 @@ const SinglePage = async ({ params }: { params: { id: string } }) => {
     },
   });
 
+  const user = await getUserInfo(userId)
+
+  const following = user?.following.map((follower)=>{
+    return follower.user;
+  })
+  
+
   const teams = allTeams.filter(team => team.members.length > 0);
   
   return (
     <div>
-      <Information singleTask={singleTask!} teams={teams}/>
+      <Information singleTask={singleTask!} teams={teams} following={following}/>
     </div>
   );
 };

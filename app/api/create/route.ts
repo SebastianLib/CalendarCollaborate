@@ -6,36 +6,45 @@ export async function POST(
     req: Request,
 ){
     try {
-        const {userId} = auth();
-        const data = await req.json();
+        const {userId} = auth();       
+        const {team, type, peopleIds, ...taskData} = await req.json();
         
         if(!userId){
             return new NextResponse("unauthorized", {status: 401})
         }
-
         let task = {}
-        if(data.team === undefined || data.team === "individual"){
-            const { team, ...taskData } = data;
-            task = await prisma.task.create({
+        if(type === "individual"){            
+           task = await prisma.task.create({
                 data: {
                     userId: userId,
                     ...taskData
                 }
             }) 
+            return NextResponse.json({task})
         }
-        else{
-            const { team, ...taskData } = data;
+        if(type === "teams"){
+           task = await prisma.task.create({
+                data: {
+                    userId: userId,
+                    teamId: team,
+                    ...taskData
+                }
+            }) 
+            return NextResponse.json({task})
+        }else{
             task = await prisma.task.create({
                 data: {
                     userId: userId,
-                    teamId: data.team,
-                    ...taskData
+                    ...taskData,
+                    peopleTasks: {
+                        create: peopleIds,
+                      },
                 }
             }) 
         }  
         
 
-        return NextResponse.json(task)
+        return NextResponse.json({task})
     } catch (error) {
         console.log("[CREATE_TASK]", error);
         return new NextResponse("Internal Error", {status:500})

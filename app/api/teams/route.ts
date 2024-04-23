@@ -18,28 +18,7 @@ export async function PATCH(req:Request) {
         }
     })
 
-    const res = await prisma.team.findUnique({
-        where: {
-            id: teamId,
-          },
-        select:{
-            id: true,
-            members: true
-        }
-    })
-
-    const updatedTeam = await prisma.team.update({
-        where: {
-          id: teamId,
-        },
-        data: {
-          members: {
-           set: [...res!.members, member]
-          },
-        },
-      });
-
-    return NextResponse.json(updatedTeam);
+    return NextResponse.json(member);
   } catch (error) {
     console.log('[CREATE_TASK]', error);
     return new NextResponse('Internal Error', { status: 500 });

@@ -14,11 +14,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Team } from "@prisma/client";
+import { Team, User } from "@prisma/client";
 
 interface FormTeamProps {
   form: UseFormReturn<z.infer<typeof formSchema>>;
-  teams: Team[];
+  teams: Team[]
 }
 
 const FormTeam = ({ form, teams }: FormTeamProps) => {
@@ -36,11 +36,6 @@ const FormTeam = ({ form, teams }: FormTeamProps) => {
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              <SelectItem value="individual">
-                <div className="flex items-center gap-2">
-                  <p>Individual (You can only assign task to yourself)</p>
-                </div>
-              </SelectItem>
               {teams.map((team, index) => (
                 <SelectItem key={index} value={team.id}>
                   <div className="flex items-center gap-2">

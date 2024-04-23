@@ -7,7 +7,6 @@ const TeamsPage = async () => {
   const {userId} = auth();
   const teams = await prisma.team.findMany({
     include: {
-      owner: true,
       members: {
         include: {
           user: true,
@@ -25,7 +24,6 @@ const TeamsPage = async () => {
     </div>
   </div>
   }
-  const filteredTeams = teams.filter(team => team.members.every(member => member.user !== null));
   
   const userInTeams = teams.filter(team=>team.members.some(user => user.clerkId === userId))
   const userNotInTeams = teams.filter(team=>!team.members.some(user => user.clerkId === userId))

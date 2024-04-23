@@ -10,21 +10,41 @@ export async function PUT(
     if (!userId) {
       return new NextResponse("unauthorized", { status: 401 });
     }
-    const data = await req.json();
+    const {type, data} = await req.json();
+    console.log(type, data);
     
     const { id } = params;
+    if(type==="updatePeople"){
+      await prisma.peopleTasks.deleteMany({
+        where:{
+          taskId: id
+        }
+      })
 
-    const task = await prisma.task.update({
-      where: {
-        id,
-        userId: userId
-      },
-      data: {
-        ...data
-      }
-    });
-
-    return NextResponse.json(task);
+      const task = await prisma.task.update({
+        where: {
+          id,
+          userId: userId
+        },
+        data: {
+          peopleTasks:{
+            create: data,
+          }
+        }
+      });
+      return NextResponse.json(task);
+    }else{
+      const task = await prisma.task.update({
+        where: {
+          id,
+          userId: userId
+        },
+        data: {
+          ...data
+        }
+      });
+      return NextResponse.json(task);
+    }
   } catch (error) {
     console.log("[UPDATE_TASK]", error);
     return new NextResponse("Internal Error", { status: 500 });

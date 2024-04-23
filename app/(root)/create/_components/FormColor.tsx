@@ -15,7 +15,7 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select";
-import { colors } from "@/lib/utils";
+import { colors } from "@/utils/arrays";
 
 const FormColor = ({ form }: { form: UseFormReturn<z.infer<typeof formSchema>> }) => {
   return (

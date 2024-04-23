@@ -39,7 +39,7 @@ const SelectPeople = ({
       <div>
         {filteredPerson.length > 0 ? (
           <div>
-            {filteredPerson.slice(0, 5).map((person) => (
+            {search && filteredPerson.slice(0, 5).map((person) => (
               <div
                 key={person.id}
                 className="flex gap-2 cursor-pointer p-2 border my-1 shadow-sm"

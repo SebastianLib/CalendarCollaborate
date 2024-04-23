@@ -15,18 +15,37 @@ export const getTasks = async ({ day, month, year }: GetTasksProps) => {
     if (!userId) {
       return null;
     }
+    const tasksFromOtherPeople = await prisma.task.findMany({
+      where: {
+        day: day,
+        month: month,
+        year: year,
+        peopleTasks: {
+          some: {
+            clerkId: userId
+          }
+        }
+      },
+      include: {
+        peopleTasks: {
+          include: {
+            user: true
+          }
+        }
+      }
+    });
+
 
     const allTasks = await prisma.task.findMany({
       where: {
         day: day,
         month: month,
-        year: year
-      }
-      ,
+        year: year,
+      },
       include: {
         team: {
           include: {
-            members: true,
+            members: true
           },
         },
       },
@@ -42,10 +61,8 @@ export const getTasks = async ({ day, month, year }: GetTasksProps) => {
       }
       return false;
     });
-    console.log(uniqueTasks);
-    
 
-    return uniqueTasks;
+    return [...uniqueTasks, ...tasksFromOtherPeople];
   } catch (error) {
     console.error("[GET_DASHOBARD_COURSES]", error);
     throw error;

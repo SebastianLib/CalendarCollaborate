@@ -40,7 +40,7 @@ const EditName = ({ name, isEditable}: { name: string, isEditable:boolean}) => {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
       setLoading(true);
-      await axios.put(`/api/schedule/${id}`, data);
+      await axios.put(`/api/schedule/${id}`,{type:"", data:data});
       toast.success("you have updated task");
     } catch (error) {
       console.log(error);

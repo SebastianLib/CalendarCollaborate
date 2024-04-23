@@ -4,7 +4,7 @@ import {
   SheetClose,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { linksArray } from "@/lib/utils";
+import { linksArray } from "@/utils/arrays";
 import { auth } from "@clerk/nextjs";
 import { Menu } from "lucide-react";
 import Link from "next/link";

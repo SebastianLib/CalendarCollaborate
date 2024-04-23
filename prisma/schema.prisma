@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Task {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
   userId        String
   name          String
   description   String
@@ -19,9 +19,10 @@ model Task {
   month         Int
   year          Int
   date          DateTime
-  user          User     @relation(fields: [userId], references: [clerkId], onDelete: Cascade)
-  team          Team?    @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  teamId        String?  @db.ObjectId
+  user          User         @relation(fields: [userId], references: [clerkId], onDelete: Cascade)
+  team          Team?        @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId        String?      @db.ObjectId
+  peopleTasks   PeopleTasks[] 
 }
 
 model User {
@@ -33,25 +34,31 @@ model User {
   email           String
   photo           String
   teamMemberships TeamMembership[]
-  teams           Team[]
   Task            Task[]
-  following         Follower[]         @relation("UserFollowers")
-  followers         Follower[]
+  following       Follower[]       @relation("UserFollowers")
+  followers       Follower[]
+  peopleTasks     PeopleTasks[]
+}
+
+model PeopleTasks {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  clerkId String
+  user    User   @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
+  taskId  String  @db.ObjectId
+  task    Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
 }
 
 model Follower {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  user     User   @relation(fields: [userId], references: [clerkId])
-  userId   String 
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  user       User   @relation(fields: [userId], references: [clerkId])
+  userId     String
   follower   User   @relation("UserFollowers", fields: [followerId], references: [clerkId], onDelete: Cascade)
-  followerId String 
+  followerId String
 }
 
 model Team {
   id      String           @id @default(auto()) @map("_id") @db.ObjectId
   name    String
-  owner   User             @relation(fields: [ownerId], references: [clerkId], onDelete: Cascade)
-  ownerId String
   members TeamMembership[]
   tasks   Task[]
 }
@@ -59,7 +66,8 @@ model Team {
 model TeamMembership {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
   clerkId String
-  teamId  String 
+  teamId  String
+  role    String @default("member")
   user    User   @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
   team    Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
 }

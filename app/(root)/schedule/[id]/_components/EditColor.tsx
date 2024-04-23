@@ -22,7 +22,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
-import { colors } from "@/lib/utils";
+import { colors } from "@/utils/arrays";
 import { X } from "lucide-react";
 
 interface EditColorProps {
@@ -52,7 +52,7 @@ const EditColor = ({ color, isEditable }: EditColorProps) => {
     newData["color"] = data.newColor;
     try {
       setLoading(true);
-      await axios.put(`/api/schedule/${id}`, newData);
+      await axios.put(`/api/schedule/${id}`, {type:"", data:newData});
       toast.success("you have updated task");
     } catch (error) {
       console.log(error);

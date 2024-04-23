@@ -1,7 +1,7 @@
 "use client"
-import { getCalendar } from "@/actions/getCalendar";
+import { getCalendar } from "@/utils/getCalendar";
 import { useAppContext } from "@/context";
-import { months } from "@/lib/utils";
+import { months } from "@/utils/arrays";
 import { useEffect, useState } from "react";
 
 interface DateButtonProps{

@@ -1,13 +1,12 @@
 "use client";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { FormCalendar } from "./FormCalendar";
 import FormStartedHour from "./FormHour";
 import axios from "axios";
-import { shortcutMonths } from "@/lib/utils";
-import { useState } from "react";
+import { shortcutMonths } from "@/utils/arrays";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import FormColor from "./FormColor";
@@ -17,88 +16,98 @@ import FormTeam from "./FormTeam";
 import FormName from "./FormName";
 import { Form } from "@/components/ui/form";
 import FormDescriptionTeam from "./FormDescriptionTeam";
+import SelectType from "./SelectType";
+import { useState } from "react";
+import SelectPeople from "../../teams/_components/SelectPeople";
 
 export const formSchema = z.object({
   name: z.string().min(2).max(50),
   date: z.date({
     required_error: "A date is required.",
   }),
-  description:z.string().max(1000).optional(),
-  start: z.string().min(2),
-  end: z.string().min(2),
+  description: z.string().max(1000).optional(),
+  startingHour: z.string().min(2),
+  endingHour: z.string().min(2),
   color: z.string().min(2),
+  type: z.string(),
   team: z.string().optional(),
 });
 
 interface ScheduleFormProps {
   teams: Team[];
+  people: User[];
 }
 
-const ScheduleForm = ({teams }: ScheduleFormProps) => {
+const ScheduleForm = ({ teams, people }: ScheduleFormProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [selectedPeople, setSelectedPeople] = useState<User[]>([]);
   const router = useRouter();
-
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setError("");
-    const { name, date, start, end, color, team, description } = { ...values };
+  const { handleSubmit, watch } = form;
 
-    const currentDate = String(date);
-    const stringMonth = currentDate.split(" ")[1];
-    const day = parseInt(currentDate.split(" ")[2]);
-    const year = parseInt(currentDate.split(" ")[3]);
+  const typeValue = watch("type");
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const {date, startingHour, endingHour} = values;
+
+    const currentDate = String(date).split(" ");
     const month = shortcutMonths.findIndex(
-      (month: string) => month === stringMonth
+      (month: string) => month === currentDate[1]
     );
-
-    const { totalStarting, totalEnding } = getInfo(start, end);
+      const peopleIds = selectedPeople.map((person) =>{return {clerkId: person.clerkId}})
+    
+    const { totalStarting, totalEnding } = getInfo(startingHour, endingHour);
 
     if (totalStarting >= totalEnding) {
       return setError(
         "The end time cannot be less than or equal to the start time"
       );
     }
-
     try {
       setLoading(true);
       await axios.post("/api/create", {
-        name,
-        description,
-        startingHour: start,
-        endingHour: end,
-        day,
+        day: parseInt(currentDate[2]),
         month,
-        year,
-        color,
-        date,
-        team
+        year: parseInt(currentDate[3]),
+        peopleIds,
+        ...values
       });
-      toast.success("you have created a new task");
-      router.push("/schedule")
+      toast.success("You have created a new task");
+      router.push("/schedule");
     } catch (error) {
-      console.log(error)
+      console.log(error);
     } finally {
       setLoading(false);
+      setError("");
     }
-  }
+  };
 
   return (
     <div className="mt-10">
       <div className="max-w-4xl container mx-auto">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              <FormName form={form}/>
+              <FormName form={form} />
               <FormCalendar form={form} />
               <FormDescriptionTeam form={form} />
               <FormColor form={form} />
-              <FormStartedHour type={"start"} form={form} />
-              <FormStartedHour type={"end"} form={form} />
-              <FormTeam form={form} teams={teams} />
+              <FormStartedHour type={"startingHour"} form={form} />
+              <FormStartedHour type={"endingHour"} form={form} />
+              <SelectType form={form} />
+              {typeValue === "teams" && <FormTeam form={form} teams={teams} />}
+              {typeValue === "followers" && (
+                <SelectPeople
+                  people={people}
+                  selectedPeople={selectedPeople}
+                  setSelectedPeople={setSelectedPeople}
+                />
+              )}
             </div>
             <Button
               disabled={loading}

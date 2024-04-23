@@ -6,7 +6,7 @@ import { CalendarIcon, X } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { cn, shortcutMonths } from "@/lib/utils";
+import { cn, shortcutMonths } from "@/utils/arrays";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
@@ -57,7 +57,7 @@ export function EditCalendar({ currentDate, isEditable }: EditCalendarProps) {
 
     try {
       setLoading(true);
-      await axios.put(`/api/schedule/${id}`, newData);
+      await axios.put(`/api/schedule/${id}`, {type:"", data:newData});
       toast.success("you have updated task");
     } catch (error) {
       console.log(error);
