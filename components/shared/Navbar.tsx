@@ -6,19 +6,17 @@ import {
   SignedIn,
   SignedOut,
   UserButton,
-  auth,
 } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import MobileNavbar from "./MobileNavbar";
-import { linksArray } from "@/utils/arrays";
 import { Loader } from "lucide-react";
+
+import NavLinks from "./NavLinks";
 
 const Navbar = () => {
 
-  const {userId} = auth();
-
   return (
-    <header className="h-[70px] px-6 sm:px-10 bg-blue-500 text-white flex justify-between items-center">
+    <header className="h-[70px] shadow-xl px-6 sm:px-10 bg-blue-500 text-white flex justify-between items-center">
       <ClerkLoading>
         <Loader className="h-5 w-5 animate-spin" />
       </ClerkLoading>
@@ -37,16 +35,7 @@ const Navbar = () => {
           </div>
         </SignedOut>
       </ClerkLoaded>
-      <ul className="hidden sm:flex gap-8 text-xl">
-        {linksArray.map((link, index) => (
-          <li key={index}>
-            <Link href={link.href}>{link.label}</Link>
-          </li>
-        ))}
-        <li>
-          <Link href={`/profile/${userId}`}>My profile</Link>
-        </li>
-      </ul>
+    <NavLinks/>
       <div className="flex sm:hidden">
         <MobileNavbar />
       </div>

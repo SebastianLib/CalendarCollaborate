@@ -8,19 +8,18 @@ import ProfileModal from "./ProfileModal";
 import { useRouter } from "next/navigation";
 
 interface UserProfileProps {
-  user: User;
+  user: User & {
+    followers:( Follower&{follower:User})[] | null;
+    following:( Follower&{user:User})[] | null;
+  };
   isMyAccount: boolean;
-  followers:( Follower&{follower:User})[] | null;
-  following:( Follower&{user:User})[] | null;
   isFollowing: boolean;
 }
 
 const UserProfile = ({
   user,
   isMyAccount,
-  followers,
   isFollowing,
-  following
 }: UserProfileProps) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -77,13 +76,13 @@ const UserProfile = ({
           <h2 className="font-semibold">
             {isMyAccount ? "my followers" : "followers"}
           </h2>
-          <ProfileModal followers={followers} type="followers"/>
+          <ProfileModal followers={user.followers} type="followers"/>
         </div>
         <div className="flex flex-col justify-center items-center">
           <h2 className="font-semibold">
             {isMyAccount ? "my following" : "following"}
           </h2>
-          <ProfileModal following={following} type="following"/>
+          <ProfileModal following={user.following} type="following"/>
         </div>
       </div>
     </div>

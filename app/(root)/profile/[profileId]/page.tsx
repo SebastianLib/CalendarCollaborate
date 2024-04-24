@@ -15,7 +15,8 @@ const page = async ({ params }: { params: { profileId: string } }) => {
     redirect("/");
   }
   const searchUsers = await getSearchUsers( {profileId:profileId} );
-  const user = await getUserInfo(userId)
+  
+  const user = await getUserInfo(profileId)
   if (!user) {
     redirect("/");
   }
@@ -34,8 +35,6 @@ const page = async ({ params }: { params: { profileId: string } }) => {
         {user.firstName} Profile
       </h1>
       <UserProfile 
-      followers={user.followers} 
-      following={user.following} 
       user={user} 
       isMyAccount={isMyAccount} 
       isFollowing={isFollowing || false}/>

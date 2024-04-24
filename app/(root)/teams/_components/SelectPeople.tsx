@@ -24,9 +24,9 @@ const SelectPeople = ({
   const filteredPerson = people.filter(
     (person) =>
       person.username.toLowerCase().includes(search) &&
-      !selectedPeople.includes(person)
+      !selectedPeople.some(selectedPerson => selectedPerson.id === person.id)
   );
-
+  
   return (
     <div className="flex flex-col gap-2">
       <h3 className="text-sm">Find People</h3>
