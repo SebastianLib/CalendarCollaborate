@@ -1,15 +1,15 @@
-import { prisma } from "@/db";
 import CalendarForm from "./_components/ScheduleForm";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { getUserInfo } from "@/actions/getUserInfo";
+import db from "@/db";
 
 export default async function Home() {
   const { userId } = auth();
 
   if (!userId) redirect("/");
 
-  const allTeams = await prisma.team.findMany({
+  const allTeams = await db.team.findMany({
     include: {
       members: {
         where: {

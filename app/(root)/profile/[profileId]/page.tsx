@@ -1,4 +1,3 @@
-import { prisma } from "@/db";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import UserProfile from "./_components/UserProfile";

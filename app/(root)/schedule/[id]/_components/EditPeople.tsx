@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/select";
 import { X } from "lucide-react";
 import { PeopleTasks, User } from "@prisma/client";
-import SelectPeople from "@/app/(root)/teams/_components/SelectPeople";
+import SelectPeople from "@/components/shared/SelectPeople";
 import Image from "next/image";
 
 interface EditPeopleProps {

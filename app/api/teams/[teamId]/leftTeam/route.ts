@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs';
-import { prisma } from '@/db';
+import db from '@/db';
 
 export async function DELETE(req:Request,
     { params }: { params: { teamId: string } }) {
@@ -11,14 +11,14 @@ export async function DELETE(req:Request,
     if (!userId) {
       return new NextResponse('unauthorized', { status: 401 });
     }
-    await prisma.task.deleteMany({
+    await db.task.deleteMany({
       where:{
           teamId: teamId,
           userId: userId,
       }
   });
     
-    const deletedUser = await prisma.teamMembership.deleteMany({
+    const deletedUser = await db.teamMembership.deleteMany({
         where:{
             teamId: teamId,
             clerkId: userIdToDelete

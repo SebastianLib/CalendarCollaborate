@@ -1,5 +1,5 @@
 "use server"
-import { prisma } from "@/db";
+import db from "@/db";
 
 interface GetTeamStatsProps {
   day: number;
@@ -11,7 +11,7 @@ interface GetTeamStatsProps {
 
 export const GetTeamStats = async ({ day, month, year, onlyTeam, teamId }: GetTeamStatsProps) => {
   try {
-    const tasks = await prisma.task.findMany({
+    const tasks = await db.task.findMany({
       where: {
         day: day,
         month: month,

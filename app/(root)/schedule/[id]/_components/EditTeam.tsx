@@ -41,9 +41,6 @@ const EditTeam = ({ team, isEditable, teams }: EditTeamProps) => {
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: {
-      teamId: team,
-    },
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
@@ -99,13 +96,6 @@ const EditTeam = ({ team, isEditable, teams }: EditTeamProps) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="individual">
-                        <div className="flex items-center gap-2">
-                          <p>
-                            Individual (You can only assign task to yourself)
-                          </p>
-                        </div>
-                      </SelectItem>
                       {teams.map((team, index) => (
                         <SelectItem key={index} value={team.id}>
                           <div className="flex items-center gap-2">

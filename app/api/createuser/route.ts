@@ -1,5 +1,4 @@
-import { prisma } from "@/db";
-import { auth } from "@clerk/nextjs";
+import db from "@/db";
 import { NextResponse } from "next/server";
 
 export async function POST(
@@ -8,7 +7,7 @@ export async function POST(
     try {
         const {user} = await req.json();   
         
-        const newUser = await prisma.user.create({
+        const newUser = await db.user.create({
             data:{
               clerkId: user.id,
               email: user.emailAddresses[0].emailAddress,

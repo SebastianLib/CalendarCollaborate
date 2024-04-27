@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs';
-import { prisma } from '@/db';
+import db from '@/db';
 
 
 export async function POST(req:Request) {
@@ -17,7 +17,7 @@ export async function POST(req:Request) {
         clerkId:clerkId,
       })).concat({clerkId: userId, role:"owner"});
       
-      const newTeam = await prisma.team.create({
+      const newTeam = await db.team.create({
         data: {
           name,
           members: {

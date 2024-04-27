@@ -1,34 +1,16 @@
 import { Button } from "@/components/ui/button";
-import { prisma } from "@/db";
+import db from "@/db";
 import {
   ClerkLoaded,
   ClerkLoading,
   SignedIn,
   SignedOut,
-  currentUser,
 } from "@clerk/nextjs";
-import axios from "axios";
 import { Loader } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default async function Home() {
-  const user = await currentUser();
-  
-    if (user) {
-      const newUser = await prisma.user.findUnique({
-        where: {
-          clerkId: user.id,
-        },
-      });        
-      if (!newUser) {
-        try {
-           await axios.post(`/api/createuser`, { user: user });
-        } catch (error) {
-          console.log(error);
-      }
-    }
-    }
 
   return (
     <div className="flex flex-col lg:flex-row items-center justify-center h-[calc(100vh-70px)]">
@@ -53,10 +35,8 @@ export default async function Home() {
                   Get Started
                 </Button>
               </Link>
-              <Link href="/sign-in">
-                <Button size="lg" variant="secondary" className="w-full">
+              <Link href="/sign-in" className="text-black">
                   I already have an account
-                </Button>
               </Link>
             </SignedOut>
 

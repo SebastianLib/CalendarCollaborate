@@ -1,4 +1,4 @@
-import { prisma } from "@/db";
+import db from "@/db";
 import { redirect } from "next/navigation";
 import Members from "./_component/Members";
 import { auth } from "@clerk/nextjs/server";
@@ -18,7 +18,7 @@ const PageId = async ({
 
   if (!userId) redirect("/");
 
-  const team = await prisma.team.findUnique({
+  const team = await db.team.findUnique({
     where: {
       id: params.teamId,
     },

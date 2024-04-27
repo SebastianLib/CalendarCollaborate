@@ -1,5 +1,5 @@
 "use server"
-import { prisma } from "@/db";
+import db from "@/db";
 import { auth } from "@clerk/nextjs";
 
 export const getFollowers = async(profileId:string) => {
@@ -10,7 +10,7 @@ export const getFollowers = async(profileId:string) => {
             return null
         }
         
-        const followers = await prisma.follower.findMany({
+        const followers = await db.follower.findMany({
             where:{
                 userId: profileId,
             },

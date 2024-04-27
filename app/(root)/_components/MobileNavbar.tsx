@@ -21,13 +21,13 @@ const MobileNavbar = () => {
           {linksArray.map((item) => (
             <SheetClose asChild key={item.href}>
               <Link href={item.href}>
-                <li className="navLi text-3xl font-medium">{item.label}</li>
+                <li className=" text-3xl font-medium">{item.label}</li>
               </Link>
             </SheetClose>
           ))}
           <li>
             <Link
-              className="navLi text-3xl font-medium"
+              className="text-3xl font-medium"
               href={`/profile/${userId}`}
             >
               My profile

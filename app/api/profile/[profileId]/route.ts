@@ -1,4 +1,4 @@
-import { prisma } from "@/db";
+import db from "@/db";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
@@ -14,7 +14,7 @@ export async function POST(
             return new NextResponse("unauthorized", {status: 401})
         }
         
-        const theSameFollower = await prisma.follower.findMany({
+        const theSameFollower = await db.follower.findMany({
             where:{
                 userId: profileId,
                 followerId: userId,
@@ -25,7 +25,7 @@ export async function POST(
             return new NextResponse("User is already a follower.", {status: 409})
         }
         
-        const newFollower = await prisma.follower.create({
+        const newFollower = await db.follower.create({
             data:{
                 userId: profileId,
                 followerId: userId,
@@ -50,7 +50,7 @@ export async function DELETE(
             return new NextResponse("unauthorized", {status: 401})
         }
         
-        const removeFollow = await prisma.follower.deleteMany({
+        const removeFollow = await db.follower.deleteMany({
             where:{
                 userId: profileId,
                 followerId: userId,

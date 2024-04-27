@@ -1,4 +1,4 @@
-import { prisma } from "@/db";
+import db from "@/db";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
@@ -15,13 +15,13 @@ export async function PUT(
     
     const { id } = params;
     if(type==="updatePeople"){
-      await prisma.peopleTasks.deleteMany({
+      await db.peopleTasks.deleteMany({
         where:{
           taskId: id
         }
       })
 
-      const task = await prisma.task.update({
+      const task = await db.task.update({
         where: {
           id,
           userId: userId
@@ -34,7 +34,7 @@ export async function PUT(
       });
       return NextResponse.json(task);
     }else{
-      const task = await prisma.task.update({
+      const task = await db.task.update({
         where: {
           id,
           userId: userId
@@ -62,7 +62,7 @@ export async function DELETE(
     
     const { id } = params;
 
-    const task = await prisma.task.delete({
+    const task = await db.task.delete({
       where: {
         id,
         userId

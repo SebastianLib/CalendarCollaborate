@@ -3,8 +3,7 @@ import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
 import { clerkClient } from '@clerk/nextjs'
 import { NextResponse } from 'next/server'
-import { createUser } from '@/actions/createUser'
-import { prisma } from '@/db'
+import db from '@/db'
  
 export async function POST(req: Request) {
  
@@ -59,7 +58,7 @@ export async function POST(req: Request) {
     const { id, email_addresses, image_url, first_name, last_name, username } = evt.data;
 
     try {
-      const newUser = await prisma.user.create({
+      const newUser = await db.user.create({
         data:{
           clerkId: id,
           email: email_addresses[0].email_address,

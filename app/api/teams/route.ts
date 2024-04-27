@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs';
-import { prisma } from '@/db';
+import db from '@/db';
 
 export async function PATCH(req:Request) {
   try {
@@ -11,7 +11,7 @@ export async function PATCH(req:Request) {
 
     const { teamId } = await req.json();
 
-    const member = await prisma.teamMembership.create({
+    const member = await db.teamMembership.create({
         data:{
             clerkId: userId,
             teamId: teamId

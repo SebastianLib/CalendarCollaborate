@@ -1,5 +1,5 @@
 "use server"
-import { prisma } from "@/db";
+import db from "@/db";
 import { auth } from "@clerk/nextjs";
 
 interface GetTasksProps {
@@ -15,7 +15,7 @@ export const getTasks = async ({ day, month, year }: GetTasksProps) => {
     if (!userId) {
       return null;
     }
-    const tasksFromOtherPeople = await prisma.task.findMany({
+    const tasksFromOtherPeople = await db.task.findMany({
       where: {
         day: day,
         month: month,
@@ -36,7 +36,7 @@ export const getTasks = async ({ day, month, year }: GetTasksProps) => {
     });
 
 
-    const allTasks = await prisma.task.findMany({
+    const allTasks = await db.task.findMany({
       where: {
         day: day,
         month: month,

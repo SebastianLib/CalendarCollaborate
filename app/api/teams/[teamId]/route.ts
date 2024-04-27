@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs';
-import { prisma } from '@/db';
+import db from '@/db';
 
 export async function DELETE(req:Request,
     { params }: { params: { teamId: string } }) {
@@ -14,7 +14,7 @@ export async function DELETE(req:Request,
 
     const { deleteUserId } = await req.json();  
 
-    await prisma.teamMembership.delete({
+    await db.teamMembership.delete({
         where:{
             teamId: teamId,
             id: deleteUserId

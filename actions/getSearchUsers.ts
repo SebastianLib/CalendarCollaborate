@@ -1,5 +1,5 @@
 "use server"
-import { prisma } from "@/db";
+import db from "@/db";
 import { auth } from "@clerk/nextjs";
 
 interface Props{
@@ -16,7 +16,7 @@ export const getSearchUsers = async({input, profileId}:Props) => {
             return null
         }
         
-        const users = await prisma.user.findMany({
+        const users = await db.user.findMany({
             where:{
                 username:{
                     contains: input

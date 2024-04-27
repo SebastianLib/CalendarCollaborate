@@ -1,11 +1,11 @@
-import { prisma } from "@/db";
+import db from "@/db";
 import CreateTeam from "./_components/CreateTeam";
 import Teams from "./_components/Teams";
 import { auth } from "@clerk/nextjs";
 
 const TeamsPage = async () => {
   const {userId} = auth();
-  const teams = await prisma.team.findMany({
+  const teams = await db.team.findMany({
     include: {
       members: {
         include: {

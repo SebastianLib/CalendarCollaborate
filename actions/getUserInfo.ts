@@ -1,5 +1,5 @@
 "use server"
-import { prisma } from "@/db";
+import  prisma  from "@/db";
 
 export const getUserInfo= async(profileId:string) => {
     try {

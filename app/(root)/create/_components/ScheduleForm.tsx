@@ -18,7 +18,7 @@ import { Form } from "@/components/ui/form";
 import FormDescriptionTeam from "./FormDescriptionTeam";
 import SelectType from "./SelectType";
 import { useState } from "react";
-import SelectPeople from "../../teams/_components/SelectPeople";
+import SelectPeople from "@/components/shared/SelectPeople";
 
 export const formSchema = z.object({
   name: z.string().min(2).max(50),
@@ -26,8 +26,8 @@ export const formSchema = z.object({
     required_error: "A date is required.",
   }),
   description: z.string().max(1000).optional(),
-  startingHour: z.string().min(2),
-  endingHour: z.string().min(2),
+  startingHour: z.string(),
+  endingHour: z.string(),
   color: z.string().min(2),
   type: z.string(),
   team: z.string().optional(),

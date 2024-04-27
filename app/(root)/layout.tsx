@@ -1,5 +1,5 @@
 import { AppWrapper } from "@/context";
-import Navbar from "../../components/shared/Navbar";
+import Navbar from "./_components/Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

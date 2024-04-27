@@ -1,4 +1,4 @@
-import { prisma } from "@/db";
+import db from "@/db";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
@@ -14,7 +14,7 @@ export async function POST(
         }
         let task = {}
         if(type === "individual"){            
-           task = await prisma.task.create({
+           task = await db.task.create({
                 data: {
                     userId: userId,
                     ...taskData
@@ -23,7 +23,7 @@ export async function POST(
             return NextResponse.json({task})
         }
         if(type === "teams"){
-           task = await prisma.task.create({
+           task = await db.task.create({
                 data: {
                     userId: userId,
                     teamId: team,
@@ -32,7 +32,7 @@ export async function POST(
             }) 
             return NextResponse.json({task})
         }else{
-            task = await prisma.task.create({
+            task = await db.task.create({
                 data: {
                     userId: userId,
                     ...taskData,

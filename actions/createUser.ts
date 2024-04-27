@@ -1,4 +1,4 @@
-import { prisma } from "@/db";
+import db from "@/db";
 
 export async function createUser(user:{
     clerkId: string;
@@ -12,7 +12,7 @@ export async function createUser(user:{
     
     try {
   
-      const newUser = await prisma.user.create({
+      const newUser = await db.user.create({
         data:{
             ...user
         }

@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import SelectPeople from "./SelectPeople";
+import SelectPeople from "@/components/shared/SelectPeople";
 import { User } from "@prisma/client";
 import axios from "axios";
 import { toast } from "react-toastify";

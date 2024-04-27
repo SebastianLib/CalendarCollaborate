@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { prisma } from "@/db";
+import db from "@/db";
 import { auth } from "@clerk/nextjs";
 import { Plus } from "lucide-react";
 import { redirect } from "next/navigation";
@@ -11,7 +11,7 @@ const CreateTeam = async () => {
 
   if (!userId) redirect("/");
 
-  const people = await prisma.user.findMany({
+  const people = await db.user.findMany({
     where: {
       NOT: {
         clerkId: userId,

@@ -1,6 +1,6 @@
+import db from "@/db";
 import { auth } from "@clerk/nextjs";
 import { TeamMembership, User } from "@prisma/client";
-import { prisma } from "@/db";
 
 interface GetFollowInfoProps{
     members: (TeamMembership & { user: User })[];
@@ -20,7 +20,7 @@ export const getFollowInfo = async({members}:GetFollowInfoProps): Promise<GetFol
         return user.clerkId;
       }).filter((memberId)=>memberId !== userId);
 ;
-    const allFollowers = await prisma.follower.findMany({
+    const allFollowers = await db.follower.findMany({
         where:{
             followerId: userId,
         },
