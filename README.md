@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## CalendarCollaborate
 
-First, run the development server:
+CalendarCollaborate is a helpful tool to help you stay organized and work better with your team. You can use it to manage your tasks and coordinate with others easily.
+## Demo
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Live Demo:** https://calendar-collaborate.vercel.app/ 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### Demo Account
+- **Email:** sebastianlib04@gmail.com
+- **Password:** applicationdemo
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Technologies
 
-## Learn More
+Project is built with:
 
-To learn more about Next.js, take a look at the following resources:
+- [**React**](https://react.dev/)
+- [**Nextjs**](https://nextjs.org/docs)
+- [**Typescript**](https://www.typescriptlang.org/)
+- [**MongoDB**](https://www.mongodb.com/)
+- [**Prisma**](https://www.prisma.io/)
+- [**Tailwind**](https://tailwindcss.com/)
+- [**Axios**](https://axios-http.com/)
+- [**Shadcn**](https://ui.shadcn.com/)
+- [**React-Toastify**](https://fkhadra.github.io/react-toastify/introduction/)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Features
 
-## Deploy on Vercel
+- **User Authentication**: Users can sign up and log in with an email and password provided by the clerk. They can also manage their accounts, for example, by changing their password or username.
+- **Task Managment**: Users can add tasks for themselves or their team, as well as edit, delete, and filter tasks by date.
+- **Team Managment**: Users can create team, delete team, add people, remove people, track the number of tasks on a given day and follow and unfollow all members.
+- **Following people**: Users can follow other people, and they can assign tasks to people whom they are following.
+- **Responsive design**: Users can access the application on various devices and screen sizes, thanks to Tailwind CSS. The layout and components adapt to the viewport width and orientation
+## Screenshots
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+![App Screenshot](https://i.postimg.cc/PxThVMwD/calendar1.png)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+![App Screenshot](https://i.postimg.cc/d16FbT2x/calendar2.png)
+
+![App Screenshot](https://i.postimg.cc/mkr4B2V2/calendar3.png)
+
+![App Screenshot](https://i.postimg.cc/BQk3f3F4/calendar4.png)
+
+![App Screenshot](https://i.postimg.cc/zGhrJQwW/calendar5.png)
+
+![App Screenshot](https://i.postimg.cc/Dzd3GbMw/calendar6.png)
+

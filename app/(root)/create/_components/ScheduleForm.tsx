@@ -19,19 +19,8 @@ import FormDescriptionTeam from "./FormDescriptionTeam";
 import SelectType from "./SelectType";
 import { useState } from "react";
 import SelectPeople from "@/components/shared/SelectPeople";
+import { CreateTaskSchema, CreateTaskSchemaType } from "@/schemas/createTask";
 
-export const formSchema = z.object({
-  name: z.string().min(2).max(50),
-  date: z.date({
-    required_error: "A date is required.",
-  }),
-  description: z.string().max(1000).optional(),
-  startingHour: z.string(),
-  endingHour: z.string(),
-  color: z.string().min(2),
-  type: z.string(),
-  team: z.string().optional(),
-});
 
 interface ScheduleFormProps {
   teams: Team[];
@@ -44,15 +33,15 @@ const ScheduleForm = ({ teams, people }: ScheduleFormProps) => {
   const [selectedPeople, setSelectedPeople] = useState<User[]>([]);
   const router = useRouter();
   
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<CreateTaskSchemaType>({
+    resolver: zodResolver(CreateTaskSchema),
   });
 
   const { handleSubmit, watch } = form;
 
   const typeValue = watch("type");
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: CreateTaskSchemaType) => {
     const {date, startingHour, endingHour} = values;
 
     const currentDate = String(date).split(" ");

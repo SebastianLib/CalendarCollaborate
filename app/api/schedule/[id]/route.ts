@@ -11,7 +11,6 @@ export async function PUT(
       return new NextResponse("unauthorized", { status: 401 });
     }
     const {type, data} = await req.json();
-    console.log(type, data);
     
     const { id } = params;
     if(type==="updatePeople"){

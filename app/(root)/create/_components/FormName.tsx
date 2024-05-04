@@ -9,9 +9,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
-import { formSchema } from "./ScheduleForm";
+import { CreateTaskSchema } from "@/schemas/createTask";
 
-const FormName = ({ form }: { form: UseFormReturn<z.infer<typeof formSchema>> }) => {
+const FormName = ({ form }: { form: UseFormReturn<z.infer<typeof CreateTaskSchema>> }) => {
   return (
     <FormField
     control={form.control}

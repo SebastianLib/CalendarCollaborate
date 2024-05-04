@@ -1,7 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,20 +17,18 @@ import { User } from "@prisma/client";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { CreateTeamSchema, CreateTeamSchemaType } from "@/schemas/createTeam";
 
-export const formSchema = z.object({
-  name: z.string().min(2).max(50),
-});
 
 const CreateTeamForm = ({ people }: { people: User[] }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedPeople, setSelectedPeople] = useState<User[]>([]);
   const router = useRouter();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<CreateTeamSchemaType>({
+    resolver: zodResolver(CreateTeamSchema),
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: CreateTeamSchemaType) {
     
     try {
       setLoading(true);
@@ -61,7 +58,7 @@ const CreateTeamForm = ({ people }: { people: User[] }) => {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel> <h3 className="text-sm">Name</h3></FormLabel>
+                <FormLabel> Name</FormLabel>
                 <FormControl>
                   <Input
                     type="text"

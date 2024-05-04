@@ -19,14 +19,15 @@ import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { UseFormReturn, useForm} from "react-hook-form";
 import { z } from "zod";
-import { formSchema } from "./ScheduleForm";
-export const FormCalendar = ({ form }: { form: UseFormReturn<z.infer<typeof formSchema>> }) => {
+import { CreateTaskSchema } from "@/schemas/createTask";
+
+export const FormCalendar = ({ form }: { form: UseFormReturn<z.infer<typeof CreateTaskSchema>> }) => {
   return (
     <FormField
           control={form.control}
           name="date"
           render={({ field }) => (
-            <FormItem className="flex flex-col">
+            <FormItem className="flex flex-col md:mt-2">
               <FormLabel>Date</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>

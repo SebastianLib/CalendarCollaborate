@@ -1,6 +1,5 @@
 import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
-import { formSchema } from "./ScheduleForm";
 import {
     FormControl,
     FormDescription,
@@ -10,8 +9,9 @@ import {
     FormMessage,
   } from "@/components/ui/form"
   import { Textarea } from "@/components/ui/textarea";
+import { CreateTaskSchema } from "@/schemas/createTask";
 
-const FormDescriptionTeam = ({ form }: { form: UseFormReturn<z.infer<typeof formSchema>> }) => {
+const FormDescriptionTeam = ({ form }: { form: UseFormReturn<z.infer<typeof CreateTaskSchema>> }) => {
   return (
 
       <FormField

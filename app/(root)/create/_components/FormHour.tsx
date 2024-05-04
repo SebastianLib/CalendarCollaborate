@@ -1,8 +1,6 @@
 import { UseFormReturn } from "react-hook-form";
-import { formSchema } from "./ScheduleForm";
 import { renderHours } from "@/utils/renderHours";
 import { z } from "zod";
-
 import {
   FormControl,
   FormField,
@@ -17,12 +15,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { CreateTaskSchema } from "@/schemas/createTask";
 
 const FormStartedHour = ({
   form,
   type,
 }: {
-  form: UseFormReturn<z.infer<typeof formSchema>>;
+  form: UseFormReturn<z.infer<typeof CreateTaskSchema>>;
   type: "startingHour" | "endingHour";
 }) => {
   const hours = renderHours().flat();
@@ -48,6 +47,7 @@ const FormStartedHour = ({
               ))}
             </SelectContent>
           </Select>
+          <FormMessage/>
         </FormItem>
       )}
     />

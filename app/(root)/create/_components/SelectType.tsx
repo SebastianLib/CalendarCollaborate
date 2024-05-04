@@ -1,18 +1,17 @@
-import { FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  SelectLabel,
 } from "@/components/ui/select";
+import { CreateTaskSchema } from "@/schemas/createTask";
 import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
-import { formSchema } from "./ScheduleForm";
 
 interface FormTeamProps {
-    form: UseFormReturn<z.infer<typeof formSchema>>;
+    form: UseFormReturn<z.infer<typeof CreateTaskSchema>>;
   }
 
 const SelectType = ({ form}: FormTeamProps) => {
@@ -45,6 +44,7 @@ const SelectType = ({ form}: FormTeamProps) => {
               </SelectItem>
             </SelectContent>
           </Select>
+          <FormMessage/>
         </FormItem>
       )}
     />
