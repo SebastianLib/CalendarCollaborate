@@ -15,7 +15,12 @@ export const getFollowers = async(profileId:string) => {
                 userId: profileId,
             },
             include:{
-                follower:true
+                follower:{
+                    include:{
+                        followers: true,
+                        following: true
+                    }
+                }
             }
         })
         

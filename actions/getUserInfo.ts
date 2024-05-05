@@ -9,16 +9,26 @@ export const getUserInfo= async(profileId:string) => {
             },include:{
               followers:{
                 include:{
-                  follower: true
+                  follower:{
+                    include:{
+                      followers: true,
+                      following: true
+                  }
+                  }
                 }
               },
               following:{
                 include:{
-                  user: true
+                  user: true,
+                  follower:{
+                    include:{
+                      followers: true,
+                      following: true
+                  }
                 }
               },
             },
-          });
+    }});
         return user
     } catch (error) {
         console.error("[GET_FOLLOWERS_ERROR]", error);

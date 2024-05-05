@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import {  useState } from "react";
+import { toast } from "react-toastify";
 interface FollowTeammatesProps {
     teammatesWithNoFollow: string[];
     membersId: string[];
@@ -19,10 +20,9 @@ const FollowTeammates = ({ teammatesWithNoFollow, membersId }: FollowTeammatesPr
         await axios.post(`/api/profile/${user}`);
       } catch (error) {
         console.error(error);
-      } finally {
-        return;
       }
     });
+    toast.success(`You have successfully followed all members!`)
     setLoading(false);
     router.refresh();
   };
@@ -34,10 +34,9 @@ const FollowTeammates = ({ teammatesWithNoFollow, membersId }: FollowTeammatesPr
         await axios.delete(`/api/profile/${user}`);
       } catch (error) {
         console.error(error);
-      } finally {
-        return;
       }
     });
+    toast.success(`You have successfully unfollowed all members!`)
     setLoading(false);
     router.refresh();
   };

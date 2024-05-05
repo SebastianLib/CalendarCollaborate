@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useState } from "react";
 import ProfileModal from "./ProfileModal";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 interface UserProfileProps {
   user: User & {
@@ -24,29 +25,24 @@ const UserProfile = ({
   const [loading, setLoading] = useState(false);
   const router = useRouter();
     
-  const handleFollow = async () => {
+  const handleFollow = async (type: "follow" | "unfollow") => {
     try {
       setLoading(true);
-      await axios.post(`/api/profile/${user.clerkId}`);
+      if(type === "follow"){
+        await axios.post(`/api/profile/${user.clerkId}`);
+        toast.success(`You have successfully followed ${user.username}!`)
+      }else{
+        await axios.delete(`/api/profile/${user.clerkId}`);
+        toast.success(`You have successfully unfollowed ${user.username}!`)
+      }
       router.refresh();
     } catch (error) {
+      toast.success(`Something went wrong.`)
       console.error(error);
     } finally {
       setLoading(false);
     }
   };
-
-  const removeFollow = async() => {
-    try {
-      setLoading(true);
-      await axios.delete(`/api/profile/${user.clerkId}`);
-      router.refresh();
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  }
 
   return (
     <div className="flex flex-col gap-2 items-center mt-4">
@@ -59,13 +55,13 @@ const UserProfile = ({
       />
       <h2 className="font-bold text-xl">{user.username}</h2>
       {isFollowing ? (
-        <Button variant="secondary" disabled={loading} onClick={removeFollow} className="w-full max-w-40">
+        <Button variant="secondary" disabled={loading} onClick={()=>handleFollow("unfollow")} className="w-full max-w-40">
           Unfollow
         </Button>
       ) : (
         <>
           {!isMyAccount && (
-            <Button disabled={loading} onClick={handleFollow} className="w-full max-w-40">
+            <Button disabled={loading} onClick={()=>handleFollow("follow")} className="w-full max-w-40">
               Follow
             </Button>
           )}

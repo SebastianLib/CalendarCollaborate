@@ -1,6 +1,5 @@
 import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
-import { formSchema } from "./ScheduleForm";
 import {
   FormControl,
   FormField,
@@ -15,9 +14,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Team, User } from "@prisma/client";
+import { CreateTaskSchemaType } from "@/schemas/createTask";
 
 interface FormTeamProps {
-  form: UseFormReturn<z.infer<typeof formSchema>>;
+  form: UseFormReturn<CreateTaskSchemaType>;
   teams: Team[]
 }
 

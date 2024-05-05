@@ -34,6 +34,7 @@ const PageId = async ({
   const userExist = team?.members.some((member) => member.clerkId === userId);
 
   if (!team || !userExist) redirect("/");
+
   const isOwner = team.members.some(member => member.clerkId === userId && member.role === "owner");
   return (
     <div className="container mx-auto">
@@ -44,7 +45,7 @@ const PageId = async ({
       <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
         <Members members={team.members} isOwner={isOwner}/>
         <TeamTasks />
-        <Options members={team.members} isOwner={isOwner}/>
+        <Options members={team.members} isOwner={isOwner} team={team}/>
         <TeamStats/>
       </div>
     </div>

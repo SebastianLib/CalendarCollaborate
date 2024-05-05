@@ -14,28 +14,19 @@ interface SingleFollowerProps {
 
 const SingleFollower = ({ follower }: SingleFollowerProps) => {
   const { userId } = useAuth();
-  const [isFollowing, setIsFollowing] = useState<boolean>();
+  const [isFollowing, setIsFollowing] = useState<boolean | null | undefined>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
-    
-  const handleFollow = async (e:any) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      await axios.post(`/api/profile/${follower.clerkId}`);
-      router.refresh();
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  const removeFollow = async (e:any) => {
+  const handleFollow = async (e:any ,type: "follow" | "unfollow") => {
     e.preventDefault();
     try {
       setLoading(true);
-      await axios.delete(`/api/profile/${follower.clerkId}`);
+      if (type === "follow") {
+        await axios.post(`/api/profile/${follower.clerkId}`);
+      } else {
+        await axios.delete(`/api/profile/${follower.clerkId}`);
+      }
       router.refresh();
     } catch (error) {
       console.error(error);
@@ -47,16 +38,17 @@ const SingleFollower = ({ follower }: SingleFollowerProps) => {
   useEffect(() => {
     const checkFollowing = async () => {
       const data = await getFollowers(follower.clerkId);
-      const allFollowers = data?.map((follower) => {
-        return follower.follower;
-      });
+      
+      const allFollowers = data?.map((user) => {
+        return user.follower;
+      });      
       const following = allFollowers?.some(
         (follower) => follower.clerkId === userId
       );
       setIsFollowing(following);
     };
     checkFollowing();
-  }, [handleFollow, removeFollow]);
+  }, [handleFollow]);
 
   return (
     <Link
@@ -78,19 +70,23 @@ const SingleFollower = ({ follower }: SingleFollowerProps) => {
         <Button
           variant="secondary"
           disabled={loading}
-          onClick={removeFollow}
+          onClick={(e) => handleFollow(e,"unfollow")}
           className="w-full max-w-20"
         >
           Unfollow
         </Button>
       ) : (
-        <Button
-          disabled={loading}
-          onClick={handleFollow}
-          className="w-full max-w-20"
-        >
-          Follow
-        </Button>
+        <>
+          {userId !== follower.clerkId &&  isFollowing !== null && (
+            <Button
+              disabled={loading}
+              onClick={(e) => handleFollow(e,"follow")}
+              className="w-full max-w-20"
+            >
+              Follow
+            </Button>
+          )}
+        </>
       )}
     </Link>
   );

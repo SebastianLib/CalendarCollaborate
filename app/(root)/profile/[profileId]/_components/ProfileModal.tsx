@@ -24,10 +24,10 @@ const ProfileModal = ({ followers, following, type }: ProfileModalProps) => {
               <p className="text-center">No followers</p>
             ) : (
               <div>
-                {followers?.map((follower) => (
+                {followers?.map((user) => (
                   <SingleFollower
-                    key={follower.follower.id}
-                    follower={follower.follower}
+                    key={user.follower.id}
+                    follower={user.follower}
                   />
                 ))}
               </div>

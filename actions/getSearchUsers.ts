@@ -1,6 +1,7 @@
 "use server"
 import db from "@/db";
 import { auth } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
 interface Props{
     input?: string;
@@ -13,7 +14,7 @@ export const getSearchUsers = async({input, profileId}:Props) => {
         const {userId} = auth();
         
         if(!userId){
-            return null
+            return redirect("/sign-in")
         }
         
         const users = await db.user.findMany({
