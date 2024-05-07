@@ -8,7 +8,8 @@ interface ProfileModalProps {
   following?: (Follower & { user: User })[] | null;
 }
 
-const ProfileModal = ({ followers, following, type }: ProfileModalProps) => {
+const ProfileModal = ({ followers, following, type}: ProfileModalProps) => {
+
   return (
     <Dialog>
       <DialogTrigger>

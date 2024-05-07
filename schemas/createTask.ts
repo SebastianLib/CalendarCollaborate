@@ -11,6 +11,15 @@ export const CreateTaskSchema = z.object({
     color: z.string(),
     type: z.string(),
     team: z.string().optional(),
+    people: z.array(z.object({
+      id: z.string(),
+      clerkId: z.string(),
+      firstName: z.string(),
+      lastName: z.string(),
+      username: z.string(),
+      email: z.string(),
+      photo: z.string(),
+  })).nonempty(),
   });
 
 export type CreateTaskSchemaType = z.infer<typeof CreateTaskSchema>

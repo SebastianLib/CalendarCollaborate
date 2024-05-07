@@ -18,8 +18,8 @@ import { Form } from "@/components/ui/form";
 import FormDescriptionTeam from "./FormDescriptionTeam";
 import SelectType from "./SelectType";
 import { useState } from "react";
-import SelectPeople from "@/components/shared/SelectPeople";
 import { CreateTaskSchema, CreateTaskSchemaType } from "@/schemas/createTask";
+import SelectSchedulePeople from "./SelectSchedulePeople";
 
 
 interface ScheduleFormProps {
@@ -48,7 +48,8 @@ const ScheduleForm = ({ teams, people }: ScheduleFormProps) => {
     const month = shortcutMonths.findIndex(
       (month: string) => month === currentDate[1]
     );
-      const peopleIds = selectedPeople.map((person) =>{return {clerkId: person.clerkId}})
+      const peopleIds = values.people.map((person) =>{return {clerkId: person.clerkId}})
+    console.log(peopleIds);
     
     const { totalStarting, totalEnding } = getInfo(startingHour, endingHour);
 
@@ -91,10 +92,8 @@ const ScheduleForm = ({ teams, people }: ScheduleFormProps) => {
               <SelectType form={form} />
               {typeValue === "teams" && <FormTeam form={form} teams={teams} />}
               {typeValue === "followers" && (
-                <SelectPeople
-                  people={people}
-                  selectedPeople={selectedPeople}
-                  setSelectedPeople={setSelectedPeople}
+                <SelectSchedulePeople
+                form={form} people={people}
                 />
               )}
             </div>

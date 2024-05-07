@@ -29,8 +29,6 @@ export default async function Home() {
   })
   
   return (
-    <div>
       <CalendarForm teams={teams} people={following}/>
-    </div>
   );
 }

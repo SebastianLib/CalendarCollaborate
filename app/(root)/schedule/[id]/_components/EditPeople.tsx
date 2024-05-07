@@ -1,9 +1,5 @@
 "use client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useParams, useRouter } from "next/navigation";
@@ -14,10 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { X } from "lucide-react";
+import { Edit, X } from "lucide-react";
 import { PeopleTasks, User } from "@prisma/client";
-import SelectPeople from "@/components/shared/SelectPeople";
 import Image from "next/image";
+import EditSelectPeople from "./EditSelectPeople";
 
 interface EditPeopleProps {
   isEditable: boolean;
@@ -91,7 +87,7 @@ const EditPeople = ({ isEditable, people, following }: EditPeopleProps) => {
             </SelectTrigger>
 
             <SelectContent>
-              <SelectPeople
+              <EditSelectPeople
                 people={following || []}
                 selectedPeople={selectedPeople}
                 setSelectedPeople={setSelectedPeople}

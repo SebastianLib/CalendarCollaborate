@@ -15,10 +15,13 @@ import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { Team } from "@prisma/client";
 import { CreateTeamSchema, CreateTeamSchemaType } from "@/schemas/createTeam";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const ChangeTeamName = ({ team }: { team: Team }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const router = useRouter()
 
   const form = useForm<CreateTeamSchemaType>({
     resolver: zodResolver(CreateTeamSchema),
@@ -26,18 +29,20 @@ const ChangeTeamName = ({ team }: { team: Team }) => {
       name: team.name,
     },
   });
-
+  
   async function onSubmit(data: CreateTeamSchemaType) {
     setIsLoading(true);
     try {
       await axios.put(`/api/teams/${team.id}`, {
-        data,
+        data
       });
     } catch (error) {
       console.error(error);
     } finally {
+      toast.success("You have successfully changed team name")
       setIsLoading(false);
       setIsEditing(false);
+      router.refresh();
     }
   }
 
@@ -69,7 +74,7 @@ const ChangeTeamName = ({ team }: { team: Team }) => {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={isLoading}>
+            <Button onClick={()=>onSubmit(form.getValues())} type="submit" disabled={isLoading}>
               Submit
             </Button>
           </form>

@@ -1,7 +1,6 @@
-import { getFollowers } from "@/actions/getFollowers";
+
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@clerk/nextjs";
-import { User } from "@prisma/client";
+import {User } from "@prisma/client";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,9 +11,8 @@ interface SingleFollowerProps {
   follower: User;
 }
 
-const SingleFollower = ({ follower }: SingleFollowerProps) => {
-  const { userId } = useAuth();
-  const [isFollowing, setIsFollowing] = useState<boolean | null | undefined>(null);
+const SingleFollower = ({ follower}: SingleFollowerProps) => {
+
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
@@ -35,25 +33,11 @@ const SingleFollower = ({ follower }: SingleFollowerProps) => {
     }
   };
 
-  useEffect(() => {
-    const checkFollowing = async () => {
-      const data = await getFollowers(follower.clerkId);
-      
-      const allFollowers = data?.map((user) => {
-        return user.follower;
-      });      
-      const following = allFollowers?.some(
-        (follower) => follower.clerkId === userId
-      );
-      setIsFollowing(following);
-    };
-    checkFollowing();
-  }, [handleFollow]);
+ 
 
   return (
-    <Link
+    <div
       key={follower.id}
-      href={follower.clerkId}
       className="flex items-center justify-between w-full gap-2 hover:bg-slate-50 transition p-4"
     >
       <div className="flex items-center gap-2">
@@ -66,29 +50,12 @@ const SingleFollower = ({ follower }: SingleFollowerProps) => {
         />
         <p>{follower.username}</p>
       </div>
-      {isFollowing ? (
-        <Button
-          variant="secondary"
-          disabled={loading}
-          onClick={(e) => handleFollow(e,"unfollow")}
-          className="w-full max-w-20"
-        >
-          Unfollow
+      <Link href={follower.clerkId}>
+        <Button>
+          View Profile
         </Button>
-      ) : (
-        <>
-          {userId !== follower.clerkId &&  isFollowing !== null && (
-            <Button
-              disabled={loading}
-              onClick={(e) => handleFollow(e,"follow")}
-              className="w-full max-w-20"
-            >
-              Follow
-            </Button>
-          )}
-        </>
-      )}
-    </Link>
+      </Link>
+    </div>
   );
 };
 

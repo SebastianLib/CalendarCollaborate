@@ -1,7 +1,6 @@
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import UserProfile from "./_components/UserProfile";
-import { getFollowers } from "@/actions/getFollowers";
 import SearchProfile from "./_components/SearchProfile";
 import { getSearchUsers } from "@/actions/getSearchUsers";
 import { getUserInfo} from "@/actions/getUserInfo";
@@ -20,16 +19,14 @@ const page = async ({ params }: { params: { profileId: string } }) => {
   const isMyAccount = user.clerkId === userId;
 
 
-  const allFollowers = user?.followers.map((user)=>{
+  const allUsers= user?.followers.map((user)=>{
     return user.follower
   })
 
-  const isFollowing = allFollowers?.some(follower => follower.clerkId === userId);
+  const isFollowing = allUsers?.some(follower => follower.clerkId === userId);
   
-    // const everyfollowerFollowers = allFollowers?.map(user => user.followers)
-  // const everyfollowerFollowing = allFollowers?.map(user => user.following)
-  // console.log(everyfollowerFollowers);
-  
+        
+    
   return (
     <div className="mt-10 container mx-auto">
       <SearchProfile searchUsers={searchUsers} profileId={profileId}/>
@@ -39,7 +36,8 @@ const page = async ({ params }: { params: { profileId: string } }) => {
       <UserProfile 
       user={user} 
       isMyAccount={isMyAccount} 
-      isFollowing={isFollowing || false}/>
+      isFollowing={isFollowing || false}
+      />
     </div>
   );
 };

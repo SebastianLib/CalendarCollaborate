@@ -10,9 +10,9 @@ export async function POST(req:Request) {
       return new NextResponse('unauthorized', { status: 401 });
     }
 
-    const { name, selectedPeople } = await req.json();
+    const { name, people } = await req.json();
 
-    const clerkIds = selectedPeople.map((user:any) => user.clerkId);
+    const clerkIds = people.map((user:any) => user.clerkId);
     const teamMemberships = clerkIds.map((clerkId: string) => ({
         clerkId:clerkId,
       })).concat({clerkId: userId, role:"owner"});

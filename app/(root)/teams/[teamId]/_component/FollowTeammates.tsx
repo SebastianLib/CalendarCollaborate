@@ -12,7 +12,8 @@ interface FollowTeammatesProps {
 const FollowTeammates = ({ teammatesWithNoFollow, membersId }: FollowTeammatesProps) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  
+    console.log(teammatesWithNoFollow);
+    
   const handleFollow = async () => {
     setLoading(true);
     teammatesWithNoFollow.forEach(async (user: string) => {

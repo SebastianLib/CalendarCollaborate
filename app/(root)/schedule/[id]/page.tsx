@@ -44,9 +44,7 @@ const SinglePage = async ({ params }: { params: { id: string } }) => {
   const teams = allTeams.filter(team => team.members.length > 0);
   
   return (
-    <div>
       <Information singleTask={singleTask!} teams={teams} following={following}/>
-    </div>
   );
 };
 

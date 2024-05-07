@@ -1,5 +1,4 @@
 import { Input } from "@/components/ui/input";
-import { CreateTeamSchemaType } from "@/schemas/createTeam";
 import { User } from "@prisma/client";
 import { X } from "lucide-react";
 import Image from "next/image";
@@ -11,14 +10,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
+} from "@/components/ui/form"
+import { CreateTaskSchemaType } from "@/schemas/createTask";
 
-interface SelectPeopleProps {
-  form: UseFormReturn<CreateTeamSchemaType> | UseFormReturn<CreateTeamSchemaType> ;
+interface SelectSchedulePeopleProps {
+  form: UseFormReturn<CreateTaskSchemaType> | UseFormReturn<CreateTaskSchemaType> ;
   people: User[];
 }
 
-const SelectPeople = ({ form, people }: SelectPeopleProps) => {
+const SelectSchedulePeople = ({ form, people }: SelectSchedulePeopleProps) => {
   const [search, setSearch] = useState("");
   const selectedPeople: User[] = form.watch("people");
 
@@ -120,4 +120,4 @@ const SelectPeople = ({ form, people }: SelectPeopleProps) => {
   );
 };
 
-export default SelectPeople;
+export default SelectSchedulePeople;

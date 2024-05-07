@@ -7,7 +7,7 @@ export async function POST(
 ){
     try {
         const {userId} = auth();       
-        const {team, type, peopleIds, ...taskData} = await req.json();
+        const {team, type, peopleIds, people, ...taskData} = await req.json();
         
         if(!userId){
             return new NextResponse("unauthorized", {status: 401})
