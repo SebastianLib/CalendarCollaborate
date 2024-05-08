@@ -20,7 +20,8 @@ export const getSearchUsers = async({input, profileId}:Props) => {
         const users = await db.user.findMany({
             where:{
                 username:{
-                    contains: input
+                    contains: input,
+                    mode: 'insensitive',
                 },
                 NOT:{
                     clerkId: profileId
