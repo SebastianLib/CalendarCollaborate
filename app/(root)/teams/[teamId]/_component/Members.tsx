@@ -14,7 +14,7 @@ const Members = ({ members, isOwner}: MembersProps) => {
   return (
     <div className="space-y-2">
       <h2 className="text-xl font-semibold flex items-center gap-1"><List/> Members</h2>
-      <div className="rounded-md shadow-md  h-[300px] max-h-[300px] overflow-y-scroll p-2">
+      <div className="rounded-md shadow-md  h-[300px] max-h-[300px] overflow-y-auto p-2">
         {members.map((member) => (
           <Link key={member.id} href={`/profile/${member.clerkId}`}>
           <div className="flex justify-between items-center border-b p-4">

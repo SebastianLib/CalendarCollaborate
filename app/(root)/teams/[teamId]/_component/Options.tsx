@@ -20,7 +20,7 @@ const Options = async ({ members, isOwner, team }: OptionsParams) => {
         <Settings />
         Options
       </h2>
-      <div className="flex flex-col tems-start gap-4 p-4 h-[300px] min-h-[300px] overflow-y-scroll bg-white border border-gray-100 rounded-md shadow-md">
+      <div className="flex flex-col tems-start gap-4 p-4 h-[300px] min-h-[300px] overflow-y-auto bg-white border border-gray-100 rounded-md shadow-md">
         <RemoveTeamOrUser isOwner={isOwner} />
         <FollowTeammates
           teammatesWithNoFollow={teammatesWithNoFollow}

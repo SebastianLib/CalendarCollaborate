@@ -41,7 +41,7 @@ const TeamTasks = () => {
   return (
     <div className="space-y-2">
       <h2 className="text-xl font-semibold flex items-center gap-1"><ClipboardList/>Tasks</h2>
-      <div className="border border-gray-100 rounded-md shadow-md p-4  h-[300px] max-h-[300px] overflow-y-scroll">
+      <div className="border border-gray-100 rounded-md shadow-md p-4  h-[300px] max-h-[300px] overflow-y-auto">
         <DateButtons size="sm" />
         {loading ? (
           <h2>Wait...</h2>
