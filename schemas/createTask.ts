@@ -19,7 +19,7 @@ export const CreateTaskSchema = z.object({
       username: z.string(),
       email: z.string(),
       photo: z.string(),
-  })).nonempty(),
+  })).nonempty().optional(),
   });
 
 export type CreateTaskSchemaType = z.infer<typeof CreateTaskSchema>

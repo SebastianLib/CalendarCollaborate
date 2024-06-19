@@ -48,7 +48,7 @@ const ScheduleForm = ({ teams, people }: ScheduleFormProps) => {
     const month = shortcutMonths.findIndex(
       (month: string) => month === currentDate[1]
     );
-      const peopleIds = values.people.map((person) =>{return {clerkId: person.clerkId}})
+      const peopleIds = values.people?.map((person) =>{return {clerkId: person.clerkId}})
     console.log(peopleIds);
     
     const { totalStarting, totalEnding } = getInfo(startingHour, endingHour);
