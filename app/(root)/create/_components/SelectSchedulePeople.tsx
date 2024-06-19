@@ -20,7 +20,7 @@ interface SelectSchedulePeopleProps {
 
 const SelectSchedulePeople = ({ form, people }: SelectSchedulePeopleProps) => {
   const [search, setSearch] = useState("");
-  const selectedPeople: User[] = form.watch("people");
+  const selectedPeople: User[] | undefined = form.watch("people");
 
   const removePerson = (id: string) => {
     // @ts-ignore
@@ -84,7 +84,7 @@ const SelectSchedulePeople = ({ form, people }: SelectSchedulePeopleProps) => {
                 )}
                 <div className="flex flex-col gap-2">
                   <h2>Added People:</h2>
-                  {field.value?.length > 0 && (
+                  {field.value?.length || 0 > 0 && (
                     <div className="grid p-4 sm:grid-cols-2 gap-2 bg-gray-100 ">
                       {field.value?.map((person: User) => (
                         <div
